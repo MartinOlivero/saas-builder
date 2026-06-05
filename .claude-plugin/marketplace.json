@@ -1,0 +1,17 @@
+{
+  "name": "saas-builder",
+  "owner": {
+    "name": "Martín Olivero / IamAutom",
+    "url": "https://iamautom.com"
+  },
+  "metadata": {
+    "description": "Skills to build digital products — SaaS, landing pages, dashboards, MVPs — with smart design and architecture decisions."
+  },
+  "plugins": [
+    {
+      "name": "saas-builder",
+      "source": "./",
+      "description": "Build digital products (SaaS, landing pages, dashboards, MVPs) with smart design and architecture decisions. Includes a router that picks the right specialist skill for the job."
+    }
+  ]
+}

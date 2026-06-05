@@ -1,0 +1,22 @@
+{
+  "name": "saas-builder",
+  "version": "1.0.0",
+  "description": "Build digital products (SaaS, landing pages, dashboards, MVPs) with smart design and architecture decisions, not generic AI output. A router skill asks 2-3 questions, then activates the right specialist: product discovery, architecture, UI design, or landing pages.",
+  "author": {
+    "name": "Martín Olivero / IamAutom",
+    "url": "https://iamautom.com"
+  },
+  "homepage": "https://github.com/MartinOlivero/saas-builder",
+  "repository": "https://github.com/MartinOlivero/saas-builder",
+  "license": "MIT",
+  "keywords": [
+    "saas",
+    "landing-page",
+    "dashboard",
+    "architecture",
+    "ui-design",
+    "product-discovery",
+    "mvp",
+    "frontend"
+  ]
+}
