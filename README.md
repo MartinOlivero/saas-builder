@@ -9,6 +9,26 @@
 
 ![From idea to shipped product — what saas-builder covers across the product lifecycle (product discovery, architecture, UI/UX, backend, applied security, payments, performance/a11y/SEO/PWA, deploy), and what it leaves to Superpowers (dev process) and optional audit plugins (security audit & fuzzing, codebase & docs audit).](assets/coverage.png)
 
+<details>
+<summary>🇪🇸 <strong>¿Hablás español?</strong> — resumen rápido</summary>
+
+<br>
+
+**saas-builder** es un plugin de [Claude Code](https://claude.com/claude-code) para construir un producto digital completo de principio a fin —un SaaS, una landing, un dashboard o un MVP— con buenas decisiones de **diseño, arquitectura, backend, seguridad, pagos y deploy**, en vez del típico resultado genérico de IA.
+
+Son **16 skills** que se activan solas según lo que pidas (en español o en inglés): descubrimiento de producto, arquitectura, API, base de datos, autenticación, seguridad preventiva, Stripe, performance, accesibilidad, SEO, PWA y deploy. Funciona con solo tener [Superpowers](https://github.com/obra/superpowers) instalado; nada más.
+
+**Instalación:**
+
+```
+/plugin marketplace add MartinOlivero/saas-builder
+/plugin install saas-builder
+```
+
+Hecho por **Martín Olivero / [IamAutom](https://iamautom.com)**.
+
+</details>
+
 ## The problem it solves
 
 Most AI coding help jumps straight to implementation. You ask for "a SaaS" and you get a purple-gradient, Inter-everywhere, no-empty-states UI built on a stack nobody chose on purpose — with a string-concatenated SQL query, no rate limit, and a checkout that fulfills on the client redirect. This plugin does the thinking *before* the building, and bakes the safe default in *as* you build.
