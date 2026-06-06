@@ -1,6 +1,6 @@
-# saas-builder
+# saas-builder — Claude Code plugin to build a complete, secure SaaS
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/MartinOlivero/saas-builder)
+[![Version](https://img.shields.io/badge/version-2.1.0-blue.svg)](https://github.com/MartinOlivero/saas-builder)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
 
 > Turn Claude Code into a product-building partner. Describe what you want to ship — a SaaS, a landing page, a dashboard, an MVP — and `saas-builder` asks the right questions, makes smart design and architecture decisions, and produces real, production-grade output instead of generic AI boilerplate.

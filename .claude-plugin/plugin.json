@@ -10,6 +10,9 @@
   "repository": "https://github.com/MartinOlivero/saas-builder",
   "license": "MIT",
   "keywords": [
+    "claude-code",
+    "claude-code-plugin",
+    "claude-skills",
     "saas",
     "landing-page",
     "dashboard",
