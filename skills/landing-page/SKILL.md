@@ -34,6 +34,8 @@ If the message already answers these, skip ahead.
 
 Hand off to the `ui-design` skill to generate the design system (style, palette, typography, spacing, dark mode) before writing components. Do not invent visual choices here.
 
+**Delegation:** the design system itself is sourced per availability — if `ui-ux-pro-max` is installed, let it generate the system (optionally refined by `taste-skill`); if neither is installed, fall back to the embedded principles in `ui-design`. The landing page works either way; the originals just make it sharper. Never block on a missing dependency.
+
 ### Step 4 — Generate the copy, not just the code
 
 This skill writes the **base copy for every section** — headline, subhead, body, CTA labels — tailored to the offer and avatar. Code without copy is half a landing page.

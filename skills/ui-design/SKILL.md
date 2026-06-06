@@ -9,6 +9,16 @@ This skill produces distinctive, production-grade interfaces. It orchestrates a 
 
 Analogy: an architect does not start laying bricks. They draw the blueprint — materials, proportions, palette — and only then build. The design system is the blueprint.
 
+## Dependencies
+
+This skill works standalone, but it is **significantly stronger when the original design skills are installed**. Before generating a design system, check what is available and delegate in this order:
+
+1. **`ui-ux-pro-max` available** → invoke it to generate the full design system (palettes, styles, typography). It has the richest design database.
+2. **`taste-skill` available** → apply it as a style layer on top of the system from step 1 (or on top of the embedded fallback).
+3. **Neither installed** → use the embedded design principles in this skill as the fallback. They are kept below precisely for this case.
+
+Always prefer the originals when present; fall back gracefully and silently when they are not. Never block on a missing dependency.
+
 ## Workflow
 
 ### Step 1 — Identify the product type
@@ -17,7 +27,11 @@ The product type drives the entire visual language. Classify first: fintech, edt
 
 ### Step 2 — Generate the design system BEFORE writing code
 
-Define and state these explicitly:
+First, resolve the design system per the **Dependencies** order above:
+- If `ui-ux-pro-max` is installed, let it produce the system, then optionally refine with `taste-skill`.
+- If neither is installed, apply the **embedded fallback** below.
+
+**Embedded fallback** — define and state these explicitly:
 
 - **Visual style** — pick one with intent: glassmorphism, minimalism, brutalism, bento grid, neo-retro, editorial, etc. Justify it against the product type.
 - **Color palette** — primary, secondary, neutrals, and semantic colors (success / warning / error / info). Defined as tokens, not ad-hoc hex.
