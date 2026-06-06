@@ -15,6 +15,28 @@ Most AI coding help jumps straight to implementation. You ask for "a SaaS" and y
 
 `saas-builder` assumes you have **[Superpowers](https://github.com/obra/superpowers)** (brainstorming, TDD, debugging, planning, code review, git worktrees) and nothing else. It deliberately does **not** duplicate those. Everything else a solo developer needs to ship a professional digital product — secure backend, auth, payments, performance, accessibility, SEO, deploy — lives here, and every skill works standalone with an embedded fallback (it gets sharper when optional tools like `ui-ux-pro-max` or the Stripe MCP are present, but never blocks without them).
 
+## Where it fits in your stack
+
+`saas-builder` knows its lane. Process discipline comes from **Superpowers**; deep security *audit* and *fuzzing* come from optional review plugins (Trail of Bits, the testing handbook, audit suites). `saas-builder` owns the part those leave empty — **building the product itself**: design, architecture, backend, prevention-grade security, payments, and shipping.
+
+If your setup already nails security and testing but has a hole in product design, architecture, and SaaS building, that hole is exactly what this fills:
+
+| Lifecycle area | saas-builder | Who else / complement |
+| --- | :---: | --- |
+| Dev process — brainstorm, TDD, debug, git, review | `░░░░░░░░░░` | **Superpowers** owns this (not duplicated) |
+| Product discovery & MVP scoping | `██████████` | — |
+| Architecture & system design | `██████████` | — |
+| UI/UX & design system | `██████████` | sharper with `ui-ux-pro-max` |
+| Backend — API, data modeling, auth | `██████████` | InsForge / Supabase |
+| Applied security — *prevention while building* | `██████████` | — |
+| Payments & monetization | `██████████` | Stripe MCP |
+| Performance · accessibility · SEO · PWA | `██████████` | — |
+| Deploy · CI/CD · monitoring · rollback | `██████████` | — |
+| Security *audit* & fuzzing | `░░░░░░░░░░` | Trail of Bits, testing-handbook *(optional)* |
+| Codebase & docs audit | `░░░░░░░░░░` | codebase-audit-suite *(optional)* |
+
+The takeaway: **Superpowers + saas-builder covers idea → shipped product.** Add audit/fuzzing plugins on top when you want a security review — they *grade* the house; `saas-builder` *builds* it (safely).
+
 ## What makes it different
 
 Most AI coding tools act *after* a decision is already made — they review the code you wrote, scan the contract you deployed, or wrap one service and stop at its edge. `saas-builder` is opinionated about *when* it steps in. Two examples capture the whole philosophy.
