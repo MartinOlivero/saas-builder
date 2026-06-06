@@ -19,6 +19,8 @@ So the architecture is hybrid:
 
 If no MCP is present, create the catalog by hand in the Stripe dashboard or via the SDK; everything else below is identical.
 
+**Backend delegation:** if you're on **InsForge** (see the `data-modeling` skill), its `insforge` / `insforge-cli` skills wire Stripe checkout, subscriptions, the customer portal, and the webhook handler for you — let them own the plumbing. The **rules below still hold regardless** (fulfill only on the webhook, verify the signature, stay idempotent); InsForge automates the wiring, it doesn't change what "correct" means. On Vercel/Node you write the handler yourself as shown. Never block on a missing skill.
+
 ## Discovery (max 3 questions, only if unknown)
 
 1. One-time payments, subscriptions, or both?
@@ -65,4 +67,4 @@ Deliver: the integration choice, the `/api/checkout` and `/api/webhook` handlers
 
 ## Reference
 
-stripe-samples (checkout-single-subscription, subscription-use-cases, accept-a-payment ~800-900⭐ each, active), Stripe Customer Portal + Build-subscriptions docs, Stripe MCP (`stripe/ai` ~1.6k⭐).
+stripe-samples (checkout-single-subscription, subscription-use-cases, accept-a-payment ~800-900⭐ each, active), Stripe Customer Portal + Build-subscriptions docs, Stripe MCP (`stripe/ai` ~1.6k⭐), InsForge Stripe integration (agentic-native, via `insforge` skills).

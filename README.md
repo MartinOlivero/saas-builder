@@ -195,12 +195,12 @@ Each skill encodes methodology from authoritative, community-validated sources:
 | `data-modeling` | PostgreSQL RLS docs, [supabase](https://github.com/supabase/supabase) (~104k⭐), [insforge](https://github.com/insforge/insforge) (~5k⭐, agentic-native), AWS + PlanetScale multi-tenancy guides |
 | `auth` | InsForge Auth (agentic-native), [Better Auth](https://github.com/better-auth/better-auth) (~28k⭐), [Auth.js](https://github.com/nextauthjs/next-auth) (~28k⭐), Clerk, Supabase Auth |
 | `secure-coding` | [OWASP Cheat Sheet Series](https://github.com/OWASP/CheatSheetSeries) (~29k⭐), OWASP Top 10:2021, [GDPR.eu](https://gdpr.eu), [gitleaks](https://github.com/gitleaks/gitleaks) (~18k⭐) |
-| `payments` | [stripe-samples](https://github.com/stripe-samples), Stripe Customer Portal docs, Stripe MCP |
+| `payments` | [stripe-samples](https://github.com/stripe-samples), Stripe Customer Portal docs, Stripe MCP, InsForge Stripe integration (agentic-native) |
 | `frontend-performance` | [GoogleChrome/web-vitals](https://github.com/GoogleChrome/web-vitals) (~8.5k⭐), web.dev, Vite build docs |
 | `accessibility` | [w3c/wcag](https://github.com/w3c/wcag) 2.2, [axe-core](https://github.com/dequelabs/axe-core) (~7k⭐), [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) (~27k⭐) |
 | `technical-seo` | Google Search Central, react-helmet-async, [vite-ssg](https://github.com/antfu-collective/vite-ssg) |
 | `pwa` | [vite-plugin-pwa](https://github.com/vite-pwa/vite-plugin-pwa) (~4k⭐), [Workbox](https://github.com/GoogleChrome/workbox) (~13k⭐), [expo/skills](https://github.com/expo/skills) (native) |
-| `deployment` | GitHub Actions + Vercel docs, [sentry-javascript](https://github.com/getsentry/sentry-javascript) (~8.5k⭐) |
+| `deployment` | GitHub Actions + Vercel docs, [sentry-javascript](https://github.com/getsentry/sentry-javascript) (~8.5k⭐), InsForge deploy (agentic-native, via `insforge-cli`) |
 | `ui-design` | [style-dictionary](https://github.com/style-dictionary/style-dictionary) (~4.7k⭐), Tailwind v4, [motion](https://github.com/motiondivision/motion) (~32k⭐) |
 
 ## Credits

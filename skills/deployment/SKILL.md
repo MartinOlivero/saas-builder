@@ -20,6 +20,7 @@ Analogy: Vercel is a modern car with airbags, ABS, and a backup camera built in.
 - **Connect the repo to Vercel once** via the dashboard. After that: every push to a non-main branch gets an automatic **Preview URL**; every merge to `main` auto-deploys **Production**. No `vercel deploy` in CI needed for the happy path.
 - The **preview URL is your review environment** — reviewers test the real deployed build on each PR, not a local guess.
 - Only script a CI-driven deploy (`vercel pull` → `vercel build` → `vercel deploy --prebuilt`) if you must deploy *after* CI in one pipeline, or for a non-connected repo. For a solo dev, native Git integration is less to maintain.
+- **Backend / full-stack on InsForge:** if the backend lives on InsForge (see the `data-modeling` skill), the agent deploys edge functions, runs migrations, and can deploy the frontend through the `insforge-cli` skill — one place, agent-operated. Vercel still fits the frontend if you prefer the most-proven host; choose by the same *agentic-native vs mature-ecosystem* rule. **The CI gate, Sentry, env hygiene, and rollback steps below apply either way** — they're host-independent.
 
 ## Step 2 — Add a CI quality gate (the missing piece)
 
@@ -73,4 +74,4 @@ Deliver: the `ci.yml`, branch-protection instructions, the Sentry init + Vite pl
 
 ## Reference
 
-actions/checkout + actions/setup-node, Vercel for GitHub / Instant Rollback / Rolling Releases docs, getsentry/sentry-javascript (~8.5k⭐), @sentry/vite-plugin, flags SDK / OpenFeature.
+actions/checkout + actions/setup-node, Vercel for GitHub / Instant Rollback / Rolling Releases docs, getsentry/sentry-javascript (~8.5k⭐), @sentry/vite-plugin, flags SDK / OpenFeature, InsForge deploy (agentic-native full-stack, via `insforge-cli`).
