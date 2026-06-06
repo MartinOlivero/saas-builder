@@ -11,18 +11,26 @@
 
 Most AI coding help jumps straight to implementation. You ask for "a SaaS" and you get a purple-gradient, Inter-everywhere, no-empty-states UI built on a stack nobody chose on purpose. There's deep coverage in security and testing plugins — and almost nothing for **product design and architecture from scratch**. This plugin fills that gap: it does the thinking *before* the building.
 
-## Recommended Skills (significantly enhance results)
+## Recommended design skills
 
-Installing these skills supercharges `saas-builder` with the best available design databases:
+`saas-builder` works standalone, but its design output gets sharper when the original design skills are present. The `ui-design` and `landing-page` skills delegate the design system to them when available and fall back to embedded principles otherwise.
 
-- **ui-ux-pro-max** (~87k ⭐): `uipro init --ai claude` → 161 palettes, 50+ styles, 57 typographies.
-- **Taste Skill**: a style layer with tunable parameters (`DESIGN_VARIANCE`, `MOTION_INTENSITY`, `VISUAL_DENSITY`).
+### Auto-installed
 
-When present, the `ui-design` and `landing-page` skills delegate the design system to these and fall back gracefully when they are not installed.
+- **taste-skill** → declared as a plugin dependency, installed automatically with `saas-builder` *when it is available as a Claude Code plugin*. It currently ships as a standalone skill rather than a marketplace plugin, so install it directly once:
+  ```bash
+  npx skills add https://github.com/leonxlnx/taste-skill --skill "design-taste-frontend"
+  ```
+  Provides the tunable style layer (`DESIGN_VARIANCE`, `MOTION_INTENSITY`, `VISUAL_DENSITY`). `saas-builder` uses it automatically once present.
 
-## Works standalone, better with originals
+### Manual install recommended
 
-`saas-builder` works out of the box with no dependencies. Installing the recommended skills above unlocks professional-grade design intelligence. The router and the architecture logic are fully independent and require nothing extra.
+- **ui-ux-pro-max** (~87k ⭐): `npx uipro@latest init --ai claude`
+  `saas-builder` detects whether it is installed and uses it automatically. If it is not installed, `saas-builder` uses embedded design principles as a fallback.
+
+### How detection works
+
+`saas-builder` checks for `ui-ux-pro-max` on every session start, via a `SessionStart` hook (`hooks/check-dependencies.sh`). If it is missing, you get a one-time install nudge; if it is present, the hook stays silent. Once installed, no further configuration is needed. The router and the architecture logic are fully independent and require nothing extra.
 
 ## How it works
 

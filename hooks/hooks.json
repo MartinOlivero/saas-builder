@@ -1,0 +1,17 @@
+{
+  "description": "Detects ui-ux-pro-max at session start and nudges the user to install it for richer design output.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/check-dependencies.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
