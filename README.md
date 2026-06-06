@@ -15,6 +15,33 @@ Most AI coding help jumps straight to implementation. You ask for "a SaaS" and y
 
 `saas-builder` assumes you have **[Superpowers](https://github.com/obra/superpowers)** (brainstorming, TDD, debugging, planning, code review, git worktrees) and nothing else. It deliberately does **not** duplicate those. Everything else a solo developer needs to ship a professional digital product — secure backend, auth, payments, performance, accessibility, SEO, deploy — lives here, and every skill works standalone with an embedded fallback (it gets sharper when optional tools like `ui-ux-pro-max` or the Stripe MCP are present, but never blocks without them).
 
+## What makes it different
+
+Most AI coding tools act *after* a decision is already made — they review the code you wrote, scan the contract you deployed, or wrap one service and stop at its edge. `saas-builder` is opinionated about *when* it steps in. Two examples capture the whole philosophy.
+
+### Security: prevention, not audit
+
+The security ecosystem (Trail of Bits, Semgrep, CodeQL, audit suites) inspects **finished code** — it finds the SQL injection that's already there. Valuable, but late, and nothing stops you from *writing* the vulnerability in the first place. The `secure-coding` skill is that missing companion: it runs **while you build the endpoint**, baking in the parameterized query, the `zod` validation, and the server-side authz check before the bug can exist.
+
+> It's the seatbelt you put on before driving — not the crash investigator who shows up afterward.
+
+### Payments: the whole flow, not just the catalog
+
+Stripe's own MCP is **control-plane only**: it creates products and prices, but it cannot create a Checkout Session or process a webhook. A plugin that merely wires the MCP gives you an app that *would sell but wouldn't charge* — the money never actually lands. The `payments` skill is deliberately hybrid: it delegates the catalog to the MCP, then **embeds the part that collects the money** — the Checkout Session → signature-verified webhook → idempotent fulfillment chain that Stripe's tooling leaves to you.
+
+> The redirect is the customer saying "I'll pay." The webhook is the bank confirming the money arrived. You ship the product when the bank confirms — not on a promise.
+
+### The pattern behind both
+
+| Most AI tooling | saas-builder |
+| --- | --- |
+| Acts *after* the code is written (review, audit, scan) | Acts *while* you build — the safe default **is** the first draft |
+| Point tools for one slice (a scanner, a UI kit, an MCP) | One coherent chain across the whole lifecycle |
+| Wraps a service and stops at its edge | Delegates what's good, **embeds what the service can't do** |
+| Generic output you fix later | Opinionated defaults tied to a real stack |
+
+Every skill carries a one-line analogy like the two above — so you understand *why* a decision is right, not just copy it.
+
 ## Recommended design skills
 
 `saas-builder` works standalone, but its design output gets sharper when the original design skills are present. The `ui-design` and `landing-page` skills delegate the design system to them when available and fall back to embedded principles otherwise.
