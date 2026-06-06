@@ -192,8 +192,8 @@ Each skill encodes methodology from authoritative, community-validated sources:
 | `architecture-primer` | [System Design Primer](https://github.com/donnemartin/system-design-primer) (~352k⭐) |
 | `product-discovery` | Design Sprint, Lean Startup |
 | `api-design` | [microsoft/api-guidelines](https://github.com/microsoft/api-guidelines) (~23k⭐), Stripe API + idempotency docs, [zod](https://github.com/colinhacks/zod) (~43k⭐) |
-| `data-modeling` | PostgreSQL RLS docs, [supabase](https://github.com/supabase/supabase) (~104k⭐), AWS + PlanetScale multi-tenancy guides |
-| `auth` | [Better Auth](https://github.com/better-auth/better-auth) (~28k⭐), [Auth.js](https://github.com/nextauthjs/next-auth) (~28k⭐), Clerk, Supabase Auth |
+| `data-modeling` | PostgreSQL RLS docs, [supabase](https://github.com/supabase/supabase) (~104k⭐), [insforge](https://github.com/insforge/insforge) (~5k⭐, agentic-native), AWS + PlanetScale multi-tenancy guides |
+| `auth` | InsForge Auth (agentic-native), [Better Auth](https://github.com/better-auth/better-auth) (~28k⭐), [Auth.js](https://github.com/nextauthjs/next-auth) (~28k⭐), Clerk, Supabase Auth |
 | `secure-coding` | [OWASP Cheat Sheet Series](https://github.com/OWASP/CheatSheetSeries) (~29k⭐), OWASP Top 10:2021, [GDPR.eu](https://gdpr.eu), [gitleaks](https://github.com/gitleaks/gitleaks) (~18k⭐) |
 | `payments` | [stripe-samples](https://github.com/stripe-samples), Stripe Customer Portal docs, Stripe MCP |
 | `frontend-performance` | [GoogleChrome/web-vitals](https://github.com/GoogleChrome/web-vitals) (~8.5k⭐), web.dev, Vite build docs |

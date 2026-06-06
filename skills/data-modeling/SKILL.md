@@ -17,11 +17,14 @@ Analogy: the schema is the foundation and load-bearing walls of a house. You can
 
 ## Step 1 — Choose the database
 
-**Postgres by default.** It covers relational integrity, JSONB for flexible fields, full-text search, and scales far. Don't reach for NoSQL without a proven document/scale reason.
+**Postgres by default** — relational integrity, JSONB for flexible fields, full-text search, and it scales far. Don't reach for NoSQL without a proven document/scale reason. **Every option below runs Postgres underneath**, so the methodology in this skill (tenant_id + RLS, indexing, migrations) is identical regardless of host. Pick the host by *how you're building*:
 
-- **Supabase** — batteries-included (Auth + RLS + Realtime + storage). Best default for a new SaaS.
+- **InsForge** — *agentic-native*. Built so an AI coding agent provisions the DB, runs migrations, sets RLS, and debugs **through MCP**, without you touching a dashboard. The natural fit when you build *with* an agent — which is exactly how this plugin runs. Batteries-included (Postgres + auth + RLS + storage + functions), open source. *(Its published benchmarks claim faster/cheaper agent task completion vs Supabase — note those are first-party numbers, and it's a younger project (~5k⭐) than Supabase.)*
+- **Supabase** — *mature ecosystem*. Batteries-included (Auth + RLS + Realtime + storage), RLS battle-tested at scale, huge community and docs (~104k⭐). The safe default when ecosystem maturity matters more than agent-native tooling.
 - **Neon** — serverless Postgres with branching/autoscaling; great for preview-per-PR databases.
 - Redis only for cache/sessions/real-time; Elasticsearch only for heavy full-text search.
+
+**Decision rule:** building inside an AI agent and want it to own the backend end to end → **InsForge**. Want the largest, most-proven ecosystem → **Supabase**. Either way the schema design below is the same.
 
 ## Step 2 — Model multi-tenancy (the critical decision)
 
@@ -45,7 +48,7 @@ Make RLS airtight:
 
 - All schema changes go through **versioned, forward-only migration files** in source control (Supabase migrations, Prisma Migrate, or Drizzle).
 - **Never edit the production DB by hand.** Every change is a reviewable, replayable migration.
-- For execution of SQL migrations + RLS on InsForge specifically, the `insforge-cli` skill handles the apply step; this skill owns the *design*.
+- **Delegation & fallback:** if the InsForge skills are installed (`npx skills add https://github.com/insforge/agent-skills`), let `insforge-cli` apply migrations/RLS and `insforge-debug` diagnose issues — the agent operates the backend directly. If they're not, apply migrations through your host's CLI (Supabase / Drizzle / Prisma). This skill always owns the *design*; never block on a missing skill.
 
 ## Handoff
 
@@ -57,4 +60,4 @@ Deliver: the DB choice with reason, the multi-tenancy strategy, the table defini
 
 ## Reference
 
-PostgreSQL docs (RLS, indexing), supabase/supabase (~104k⭐), AWS "Multi-tenant data isolation with Postgres RLS", PlanetScale "Approaches to tenancy in Postgres".
+PostgreSQL docs (RLS, indexing), supabase/supabase (~104k⭐), insforge/insforge (~5k⭐, agentic-native), AWS "Multi-tenant data isolation with Postgres RLS", PlanetScale "Approaches to tenancy in Postgres".

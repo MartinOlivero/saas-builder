@@ -23,12 +23,13 @@ Analogy: auth is the lock and the guest list for your building. You don't forge 
 
 | Situation | Use | Why |
 | --- | --- | --- |
-| Already on **Supabase** | **Supabase Auth** | Free, RLS-native — every query scopes to the user in SQL. |
-| Want the best React DX / drop-in components, not tied to Supabase | **Clerk** | Best components, orgs/teams built in. ~$0.02/MAU after a free tier. |
+| Building **with an agent** / on **InsForge** | **InsForge Auth** | Agentic-native — the agent wires auth + RLS through its own skills/MCP; every query scopes to the user in SQL. |
+| Already on **Supabase** | **Supabase Auth** | Free, RLS-native — every query scopes to the user in SQL. Most-proven ecosystem. |
+| Want the best React DX / drop-in components, not tied to a backend | **Clerk** | Best components, orgs/teams built in. ~$0.02/MAU after a free tier. |
 | Full-stack TypeScript, want self-hosted control | **Better Auth** (~28k⭐) | TS-native, framework-agnostic, orgs/RBAC/passkeys/SSO. |
 | **Enterprise SSO** is a buyer requirement | **Auth0 / WorkOS** | SAML/OIDC, directory sync, the enterprise checkboxes. |
 
-Default for a fresh React + Vite + Postgres SaaS with no SSO need: **Supabase Auth** (if using Supabase) or **Clerk** (otherwise).
+Default for a fresh React + Vite + Postgres SaaS with no SSO need: **InsForge Auth** if you're building agent-first, **Supabase Auth** if on Supabase, or **Clerk** otherwise. All three scope to the user via RLS — match the auth host to the DB host from the `data-modeling` skill.
 
 ## Step 2 — Sessions vs JWT
 
@@ -51,7 +52,7 @@ Default for a fresh React + Vite + Postgres SaaS with no SSO need: **Supabase Au
 
 ## Delegation & fallback
 
-- **Provider available** → wire it (Clerk/Supabase/Better Auth) and configure roles/orgs through it. If the InsForge auth integration is in play, the `insforge-integrations` skill wires external providers into JWT-based RLS.
+- **Provider available** → wire it (InsForge/Supabase/Clerk/Better Auth) and configure roles/orgs through it. On InsForge, its `insforge` and `insforge-integrations` skills wire auth — including external providers (Clerk/Auth0/WorkOS) into JWT-based RLS — so the agent sets it up end to end.
 - **No provider chosen / offline** → fall back to a well-known library (Better Auth or Lucia), httpOnly cookie sessions, bcrypt/argon2 password hashing, and the RBAC pattern above. Never block on a missing provider.
 
 ## Output
@@ -60,4 +61,4 @@ Deliver: the provider recommendation with a one-line reason, the session/token d
 
 ## Reference
 
-Better Auth (~28k⭐), Auth.js/next-auth (~28k⭐), Clerk, Supabase Auth (part of supabase ~104k⭐).
+InsForge Auth (~5k⭐, agentic-native), Better Auth (~28k⭐), Auth.js/next-auth (~28k⭐), Clerk, Supabase Auth (part of supabase ~104k⭐).
