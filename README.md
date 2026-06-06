@@ -7,6 +7,8 @@
 
 `saas-builder` is a plugin for [Claude Code](https://claude.com/claude-code) (also compatible with Cursor, Codex, and OpenCode skills). It ships **fifteen skills** orchestrated by a router that figures out what you're actually building before a single line of code is written — and then guides you across the whole lifecycle: discovery, architecture, backend, security, payments, polish, and deploy.
 
+![From idea to shipped product — what saas-builder covers across the product lifecycle (product discovery, architecture, UI/UX, backend, applied security, payments, performance/a11y/SEO/PWA, deploy), and what it leaves to Superpowers (dev process) and optional audit plugins (security audit & fuzzing, codebase & docs audit).](assets/coverage.png)
+
 ## The problem it solves
 
 Most AI coding help jumps straight to implementation. You ask for "a SaaS" and you get a purple-gradient, Inter-everywhere, no-empty-states UI built on a stack nobody chose on purpose — with a string-concatenated SQL query, no rate limit, and a checkout that fulfills on the client redirect. This plugin does the thinking *before* the building, and bakes the safe default in *as* you build.
