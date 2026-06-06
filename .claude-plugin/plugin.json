@@ -1,7 +1,7 @@
 {
   "name": "saas-builder",
-  "version": "1.0.0",
-  "description": "Build digital products (SaaS, landing pages, dashboards, MVPs) with smart design and architecture decisions, not generic AI output. A router skill asks 2-3 questions, then activates the right specialist: product discovery, architecture, UI design, or landing pages.",
+  "version": "2.0.0",
+  "description": "Build a complete, professional digital product end to end — discovery, architecture, secure backend, auth, payments, performance, accessibility, SEO, and deploy — not generic AI output. A router skill asks 2-3 questions (English or Spanish), then activates the right specialist across the whole build lifecycle. Self-sufficient: pairs with Superpowers and needs nothing else.",
   "author": {
     "name": "Martín Olivero / IamAutom",
     "url": "https://iamautom.com"
@@ -17,6 +17,19 @@
     "ui-design",
     "product-discovery",
     "mvp",
-    "frontend"
+    "frontend",
+    "api-design",
+    "database",
+    "auth",
+    "security",
+    "owasp",
+    "stripe",
+    "payments",
+    "performance",
+    "accessibility",
+    "seo",
+    "pwa",
+    "deployment",
+    "ci-cd"
   ]
 }

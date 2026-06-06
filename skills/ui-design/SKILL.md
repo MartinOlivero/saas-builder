@@ -61,6 +61,27 @@ Never ship these:
 - **Magic colors:** no raw hex values scattered in markup. Every color comes from the system tokens.
 - **Ignored states:** never deliver a UI without designing the empty, loading, and error states. They are part of the work, not an afterthought.
 
+## Design tokens — structure them in three tiers
+
+Don't scatter raw hex. Use a three-tier token architecture so rebrands and dark mode are one change, not a hundred:
+
+1. **Primitive** — raw values (`blue-500: #3b82f6`).
+2. **Semantic** — role aliases (`color-primary`, `color-bg-surface`, `color-danger`). **Components reference only these, never primitives.**
+3. **Component** — optional per-component (`button-bg`).
+
+In this stack, expose tokens as **CSS custom properties** wired into **Tailwind v4's `@theme`** block (`--color-primary`, `--spacing-*`, `--radius-*`) so utilities and tokens share one source. Theme (light/dark, multi-brand) by **swapping CSS-variable values** under `[data-theme]` / `.dark` — component classes stay identical. Name tokens by **role, not appearance** (`color-danger`, not `color-red`). Cover color, spacing, typography, radius, shadow, z-index, and motion duration/easing. Only reach for **Style Dictionary** if you must emit tokens to multiple platforms (web + iOS/Android/email); web-only, the Tailwind `@theme` path is enough.
+
+## Responsive design — mobile-first, always
+
+- **Author base styles for small screens; layer up** with `min-width` / container queries. Never desktop-down.
+- Prefer **container queries** (`@container`) over media queries for reusable components, so a card adapts to its slot, not the viewport.
+- **Fluid type/space** with `clamp(min, preferred-vw, max)` instead of breakpoint-stepped sizes.
+- Touch targets **≥ 44×44px** (Apple) / 48×48px (Material), ≥ 8px apart.
+- Handle notches with `env(safe-area-inset-*)` + `viewport-fit=cover`; pad sticky headers/footers.
+- Use intrinsic layout primitives (Grid `auto-fit`/`minmax`, Flexbox) over manual breakpoints.
+
+(For deeper accessibility, performance, or installable/offline behavior, hand off to the `accessibility`, `frontend-performance`, and `pwa` skills.)
+
 ## Output
 
 Produce **ready-to-use components**, not throwaway prototypes — wired to the design tokens, with all states handled.
