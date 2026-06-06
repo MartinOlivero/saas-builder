@@ -233,10 +233,14 @@ Each skill encodes methodology from authoritative, community-validated sources:
 | `deployment` | GitHub Actions + Vercel docs, [sentry-javascript](https://github.com/getsentry/sentry-javascript) (~8.5k⭐), InsForge deploy (agentic-native, via `insforge-cli`) |
 | `ui-design` | [style-dictionary](https://github.com/style-dictionary/style-dictionary) (~4.7k⭐), Tailwind v4, [motion](https://github.com/motiondivision/motion) (~32k⭐) |
 
-## Credits
+## Credits & attribution
 
 Created by **Martín Olivero / [IamAutom](https://iamautom.com)**.
 
+`saas-builder` is free and open source under the [MIT License](./LICENSE) — you're welcome to **use it, fork it, build on it, and share it**, including commercially. The one thing the license requires (and that keeps open source healthy): **keep the copyright and attribution intact.** If you fork or reuse a substantial part, leave the `LICENSE` file and this credit in place, and a link back to the [original repository](https://github.com/MartinOlivero/saas-builder) is appreciated.
+
+Please don't republish it as your own work or imply it's endorsed by Martín Olivero / IamAutom. Building something *similar* from your own ideas is fair game — that's how the ecosystem grows.
+
 ## License
 
-[MIT](./LICENSE)
+[MIT](./LICENSE) — Copyright © 2026 Martín Olivero / IamAutom.
