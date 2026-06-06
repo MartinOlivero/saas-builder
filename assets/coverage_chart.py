@@ -26,8 +26,9 @@ rows = [
     ("Applied security (prevention)",               100, "saas-builder",           True),
     ("Payments & monetization",                     100, "saas-builder",           True),
     ("Performance · a11y · SEO · PWA",              100, "saas-builder",           True),
+    ("Pre-ship security review",                    100, "saas-builder",           True),
     ("Deploy · CI/CD · monitoring · rollback",      100, "saas-builder",           True),
-    ("Security audit & fuzzing",                    0,   "optional audit plugins", False),
+    ("Deep security audit & fuzzing",               0,   "optional audit plugins", False),
     ("Codebase & docs audit",                       0,   "optional audit plugins", False),
 ]
 

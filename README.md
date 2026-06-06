@@ -5,7 +5,7 @@
 
 > Turn Claude Code into a product-building partner. Describe what you want to ship — a SaaS, a landing page, a dashboard, an MVP — and `saas-builder` asks the right questions, makes smart design and architecture decisions, and produces real, production-grade output instead of generic AI boilerplate.
 
-`saas-builder` is a plugin for [Claude Code](https://claude.com/claude-code) (also compatible with Cursor, Codex, and OpenCode skills). It ships **fifteen skills** orchestrated by a router that figures out what you're actually building before a single line of code is written — and then guides you across the whole lifecycle: discovery, architecture, backend, security, payments, polish, and deploy.
+`saas-builder` is a plugin for [Claude Code](https://claude.com/claude-code) (also compatible with Cursor, Codex, and OpenCode skills). It ships **sixteen skills** orchestrated by a router that figures out what you're actually building before a single line of code is written — and then guides you across the whole lifecycle: discovery, architecture, backend, security, payments, polish, and deploy.
 
 ![From idea to shipped product — what saas-builder covers across the product lifecycle (product discovery, architecture, UI/UX, backend, applied security, payments, performance/a11y/SEO/PWA, deploy), and what it leaves to Superpowers (dev process) and optional audit plugins (security audit & fuzzing, codebase & docs audit).](assets/coverage.png)
 
@@ -33,11 +33,14 @@ If your setup already nails security and testing but has a hole in product desig
 | Applied security — *prevention while building* | `██████████` | — |
 | Payments & monetization | `██████████` | Stripe MCP |
 | Performance · accessibility · SEO · PWA | `██████████` | — |
+| Pre-ship security review | `██████████` | — |
 | Deploy · CI/CD · monitoring · rollback | `██████████` | — |
-| Security *audit* & fuzzing | `░░░░░░░░░░` | Trail of Bits, testing-handbook *(optional)* |
+| Deep security *audit* & fuzzing | `░░░░░░░░░░` | Trail of Bits, testing-handbook *(optional, high-risk apps)* |
 | Codebase & docs audit | `░░░░░░░░░░` | codebase-audit-suite *(optional)* |
 
-The takeaway: **Superpowers + saas-builder covers idea → shipped product.** Add audit/fuzzing plugins on top when you want a security review — they *grade* the house; `saas-builder` *builds* it (safely).
+`saas-builder` owns security in two passes — **prevention** while you build (`secure-coding`) and a **verification** review before you ship (`pre-ship-security`). What it deliberately leaves out is the *deep* audit (static analysis, fuzzing) that high-risk apps need — the pre-ship gate tells you when that moment has come.
+
+The takeaway: **Superpowers + saas-builder covers idea → shipped product.** Add audit/fuzzing plugins on top when an app handles money, sensitive data, or crypto — they *x-ray* the house; `saas-builder` *builds* it (safely) and *walks it through inspection* before you move in.
 
 ## What makes it different
 
@@ -112,12 +115,13 @@ You: "I want to build a SaaS for X"  (English or Spanish)
         ├─ SEO / previews?    ──►  technical-seo
         ├─ offline/installable?──► pwa
         │
-  SHIP  └─ deploy/CI/monitor? ──►  deployment
+  SHIP  ├─ safe to ship?       ──►  pre-ship-security
+        └─ deploy/CI/monitor? ──►  deployment
 ```
 
 The **router never lets Claude write code or design blindly.** It triages first — like a nurse sending you to the right specialist — then hands off with full context so you're never asked the same thing twice.
 
-## The fifteen skills
+## The sixteen skills
 
 **Orchestration**
 
@@ -157,6 +161,7 @@ The **router never lets Claude write code or design blindly.** It triages first 
 | **`accessibility`** | "make it accessible", "a11y", "WCAG", "screen reader" | WCAG 2.2 AA: semantic HTML, keyboard/focus, accessible forms, contrast, `jest-axe` in CI. |
 | **`technical-seo`** | "improve SEO", "meta tags", "no preview on WhatsApp" | Per-page OG/Twitter tags, sitemap/robots, JSON-LD, and the SPA-prerender fix so crawlers actually see your content. |
 | **`pwa`** | "make it a PWA", "work offline", "push notifications" | Installable + offline with `vite-plugin-pwa`, the right caching strategy, and the stale-service-worker fix. |
+| **`pre-ship-security`** | "is this safe to ship?", "pre-launch check", "did I miss anything?" | A fast pre-deploy security review (npm audit + secret scan + OWASP checklist), escalating to deep-audit tools only when the app is high-risk. Not a deep audit — it tells you when you need one. |
 | **`deployment`** | "deploy this", "CI/CD", "Sentry", "rollback" | Uses what Vercel gives free, adds a GitHub Actions CI gate, Sentry with source maps, env hygiene, and a rollback runbook. |
 
 ## Installation
@@ -219,6 +224,7 @@ Each skill encodes methodology from authoritative, community-validated sources:
 | `data-modeling` | PostgreSQL RLS docs, [supabase](https://github.com/supabase/supabase) (~104k⭐), [insforge](https://github.com/insforge/insforge) (~5k⭐, agentic-native), AWS + PlanetScale multi-tenancy guides |
 | `auth` | InsForge Auth (agentic-native), [Better Auth](https://github.com/better-auth/better-auth) (~28k⭐), [Auth.js](https://github.com/nextauthjs/next-auth) (~28k⭐), Clerk, Supabase Auth |
 | `secure-coding` | [OWASP Cheat Sheet Series](https://github.com/OWASP/CheatSheetSeries) (~29k⭐), OWASP Top 10:2021, [GDPR.eu](https://gdpr.eu), [gitleaks](https://github.com/gitleaks/gitleaks) (~18k⭐) |
+| `pre-ship-security` | OWASP Cheat Sheet Series (~29k⭐), `npm audit`, [gitleaks](https://github.com/gitleaks/gitleaks) (~18k⭐), Helmet; escalates to Semgrep/CodeQL, Trail of Bits, testing-handbook |
 | `payments` | [stripe-samples](https://github.com/stripe-samples), Stripe Customer Portal docs, Stripe MCP, InsForge Stripe integration (agentic-native) |
 | `frontend-performance` | [GoogleChrome/web-vitals](https://github.com/GoogleChrome/web-vitals) (~8.5k⭐), web.dev, Vite build docs |
 | `accessibility` | [w3c/wcag](https://github.com/w3c/wcag) 2.2, [axe-core](https://github.com/dequelabs/axe-core) (~7k⭐), [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) (~27k⭐) |

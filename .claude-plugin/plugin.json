@@ -1,6 +1,6 @@
 {
   "name": "saas-builder",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Build a complete, professional digital product end to end — discovery, architecture, secure backend, auth, payments, performance, accessibility, SEO, and deploy — not generic AI output. A router skill asks 2-3 questions (English or Spanish), then activates the right specialist across the whole build lifecycle. Self-sufficient: pairs with Superpowers and needs nothing else.",
   "author": {
     "name": "Martín Olivero / IamAutom",
@@ -23,6 +23,7 @@
     "auth",
     "security",
     "owasp",
+    "security-review",
     "stripe",
     "payments",
     "performance",

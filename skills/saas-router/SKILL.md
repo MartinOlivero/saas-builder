@@ -62,6 +62,7 @@ Match the request (English **or** Spanish) against this table and activate the m
 | "accessible", "a11y", "WCAG", "screen reader", "keyboard" / "accesibilidad" | `accessibility` |
 | "SEO", "meta tags", "social preview", "sitemap" / "que Google lo encuentre", "preview en WhatsApp" | `technical-seo` |
 | "PWA", "installable", "offline", "push notifications" / "que funcione offline", "instalable" | `pwa` |
+| "is this safe to ship", "pre-launch security check", "did I miss anything", before deploying / "antes de subir, ¿está seguro?" | `pre-ship-security` |
 | "deploy", "CI/CD", "GitHub Actions", "Sentry", "rollback", "staging" / "subir a producción", "monitoreo" | `deployment` |
 
 ### Step 3 — Hand off with context
@@ -77,7 +78,7 @@ A from-scratch SaaS runs through these phases. Each feeds the next — don't ski
 3. **Build** — `data-modeling` (the schema) → `api-design` (the endpoints) → `auth` (who can do what) → `ui-design` (the interface). **`secure-coding` runs throughout**, not as a final step.
 4. **Monetize** — `payments` when it's time to charge.
 5. **Polish** — `frontend-performance`, `accessibility`, `technical-seo`, `pwa` as the product matures.
-6. **Ship** — `deployment` for CI/CD, monitoring, and rollback.
+6. **Ship** — `pre-ship-security` for a final security review of the finished code, then `deployment` for CI/CD, monitoring, and rollback.
 
 Building UI before the MVP is defined, or picking a stack before knowing the scale, produces rework. But `secure-coding` is never deferred — preventing a vulnerability is always cheaper than auditing one out later.
 
