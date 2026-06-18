@@ -1,0 +1,5 @@
+{
+  "name": "saas-builder",
+  "version": "2.2.0",
+  "description": "18 skills to build digital products end to end — discovery, architecture, secure backend, auth, payments, performance, accessibility, SEO, deploy, plus anti-slop frontend (landings, portfolios, redesigns) and image-to-code. A router skill picks the right specialist (English or Spanish). Skills are auto-discovered from skills/."
+}

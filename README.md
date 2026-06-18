@@ -1,11 +1,12 @@
-# saas-builder — Claude Code plugin to build a complete, secure SaaS
+# saas-builder — multi-CLI agent plugin to build a complete, secure SaaS
 
-[![Version](https://img.shields.io/badge/version-2.1.0-blue.svg)](https://github.com/MartinOlivero/saas-builder)
+[![Version](https://img.shields.io/badge/version-2.2.0-blue.svg)](https://github.com/MartinOlivero/saas-builder)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
+[![CLIs](https://img.shields.io/badge/CLIs-Claude%20Code%20·%20OpenCode%20·%20Gemini%20·%20Codex%20·%20Copilot-purple.svg)](#installation--works-across-cli-agents)
 
-> Turn Claude Code into a product-building partner. Describe what you want to ship — a SaaS, a landing page, a dashboard, an MVP — and `saas-builder` asks the right questions, makes smart design and architecture decisions, and produces real, production-grade output instead of generic AI boilerplate.
+> Turn your CLI agent into a product-building partner. Describe what you want to ship — a SaaS, a landing page, a dashboard, an MVP — and `saas-builder` asks the right questions, makes smart design and architecture decisions, and produces real, production-grade output instead of generic AI boilerplate.
 
-`saas-builder` is a plugin for [Claude Code](https://claude.com/claude-code) (also compatible with Cursor, Codex, and OpenCode skills). It ships **sixteen skills** orchestrated by a router that figures out what you're actually building before a single line of code is written — and then guides you across the whole lifecycle: discovery, architecture, backend, security, payments, polish, and deploy.
+`saas-builder` runs on every major CLI agent — [Claude Code](https://claude.com/claude-code), [OpenCode](https://opencode.ai), [Gemini CLI](https://geminicli.com), [Codex](https://developers.openai.com/codex), and [Copilot CLI](https://docs.github.com/copilot) — because its core is portable [Agent Skills](https://agentskills.io), shipped with a native manifest for each platform. It packs **eighteen skills** orchestrated by a router that figures out what you're actually building before a single line of code is written — and then guides you across the whole lifecycle: discovery, architecture, backend, security, payments, polish, and deploy. (Tested on Claude Code and OpenCode; see [Installation](#installation--works-across-cli-agents).)
 
 ![From idea to shipped product — what saas-builder covers across the product lifecycle (product discovery, architecture, UI/UX, backend, applied security, payments, performance/a11y/SEO/PWA, deploy), and what it leaves to Superpowers (dev process) and optional audit plugins (security audit & fuzzing, codebase & docs audit).](assets/coverage.png)
 
@@ -14,16 +15,20 @@
 
 <br>
 
-**saas-builder** es un plugin de [Claude Code](https://claude.com/claude-code) para construir un producto digital completo de principio a fin —un SaaS, una landing, un dashboard o un MVP— con buenas decisiones de **diseño, arquitectura, backend, seguridad, pagos y deploy**, en vez del típico resultado genérico de IA.
+**saas-builder** construye un producto digital completo de principio a fin —un SaaS, una landing, un dashboard o un MVP— con buenas decisiones de **diseño, arquitectura, backend, seguridad, pagos y deploy**, en vez del típico resultado genérico de IA.
 
-Son **16 skills** que se activan solas según lo que pidas (en español o en inglés): descubrimiento de producto, arquitectura, API, base de datos, autenticación, seguridad preventiva, Stripe, performance, accesibilidad, SEO, PWA y deploy. Funciona con solo tener [Superpowers](https://github.com/obra/superpowers) instalado; nada más.
+Son **18 skills** que se activan solas según lo que pidas (en español o en inglés): descubrimiento de producto, arquitectura, API, base de datos, autenticación, seguridad preventiva, Stripe, performance, accesibilidad, SEO, PWA, deploy, más frontend anti-IA (landings, portfolios) e image-to-code. Funciona con solo tener [Superpowers](https://github.com/obra/superpowers) instalado; nada más.
 
-**Instalación:**
+**Funciona en todos los CLIs de agentes** (Claude Code, OpenCode, Gemini CLI, Codex, Copilot CLI) porque su núcleo son Agent Skills portables, con un manifiesto nativo por plataforma. Probado en Claude Code y OpenCode.
+
+**Instalación (Claude Code):**
 
 ```
 /plugin marketplace add MartinOlivero/saas-builder
 /plugin install saas-builder
 ```
+
+(Comandos para los otros CLIs en la sección [Installation](#installation--works-across-cli-agents).)
 
 Hecho por **Martín Olivero / [IamAutom](https://iamautom.com)**.
 
@@ -188,22 +193,37 @@ The **router never lets Claude write code or design blindly.** It triages first 
 | **`pre-ship-security`** | "is this safe to ship?", "pre-launch check", "did I miss anything?" | A fast pre-deploy security review (npm audit + secret scan + OWASP checklist), escalating to deep-audit tools only when the app is high-risk. Not a deep audit — it tells you when you need one. |
 | **`deployment`** | "deploy this", "CI/CD", "Sentry", "rollback" | Uses what Vercel gives free, adds a GitHub Actions CI gate, Sentry with source maps, env hygiene, and a rollback runbook. |
 
-## Installation
+## Installation — works across CLI agents
 
-This repository doubles as its own Claude Code marketplace, so installation is two commands:
+The skills are the product, and they follow the open [Agent Skills](https://agentskills.io) standard (`skills/<name>/SKILL.md` with `name` + `description` frontmatter) — the same format every major CLI agent now reads. This repo ships a **native manifest for each platform**, all pointing at the same `skills/` folder (no duplication).
+
+> **Tested vs. packaged (honest scope):** verified on **Claude Code** and **OpenCode**. The Gemini CLI, Codex, and Copilot CLI manifests are packaged to each platform's official spec but not yet run end-to-end on those CLIs. If you hit a snag on one, open an issue.
+
+| CLI | Manifest in this repo | Install |
+| --- | --- | --- |
+| **Claude Code** ✅ tested | `.claude-plugin/` | `/plugin marketplace add MartinOlivero/saas-builder` → `/plugin install saas-builder` |
+| **OpenCode** ✅ tested | — (native skills) | clone + link the `skills/` folder (below) |
+| **Gemini CLI** 📦 packaged | `gemini-extension.json` | `gemini extensions install https://github.com/MartinOlivero/saas-builder` |
+| **Codex** 📦 packaged | `.codex-plugin/plugin.json` | `codex plugin marketplace add MartinOlivero/saas-builder` |
+| **Copilot CLI** 📦 packaged | `plugin.json` + `.github/plugin/marketplace.json` | `copilot plugin marketplace add MartinOlivero/saas-builder` → `copilot plugin install saas-builder@saas-builder` |
+
+After installing, skills activate automatically based on what you ask — you don't call them by name.
+
+**OpenCode** has no skill installer/marketplace; it scans known folders. Clone the repo and point one of those folders at its `skills/`:
 
 ```bash
-/plugin marketplace add MartinOlivero/saas-builder
-/plugin install saas-builder
+git clone https://github.com/MartinOlivero/saas-builder ~/.saas-builder
+ln -s ~/.saas-builder/skills ~/.config/opencode/skills   # global, all projects
+# or per-project:  ln -s ~/.saas-builder/skills .opencode/skills
 ```
 
-Then restart or reload, and the skills activate automatically based on what you ask for.
-
-**Try it locally without installing** (for development):
+**Claude Code — try it locally without installing** (for development):
 
 ```bash
 claude --plugin-dir /path/to/saas-builder
 ```
+
+Why one repo serves all of them: each CLI only reads the manifest it knows (`.claude-plugin/`, `gemini-extension.json`, `.codex-plugin/`, `plugin.json`), and they all share the standard `skills/` folder. The manifests don't collide — like one building with several doormen, each opening only the doors on their own keyring, while the shared skills room has a standard lock every key fits.
 
 ## Example prompts
 

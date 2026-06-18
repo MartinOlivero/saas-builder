@@ -1,0 +1,14 @@
+{
+  "name": "saas-builder",
+  "description": "18 skills to build digital products end to end — discovery, architecture, secure backend, auth, payments, performance, accessibility, SEO, deploy, plus anti-slop frontend (landings, portfolios, redesigns) and image-to-code. A router skill picks the right specialist (English or Spanish).",
+  "version": "2.2.0",
+  "author": {
+    "name": "Martín Olivero / IamAutom",
+    "url": "https://iamautom.com"
+  },
+  "homepage": "https://github.com/MartinOlivero/saas-builder",
+  "repository": "https://github.com/MartinOlivero/saas-builder",
+  "license": "MIT",
+  "keywords": ["saas", "skills", "frontend", "backend", "architecture", "landing-page", "security", "payments"],
+  "skills": "skills/"
+}
