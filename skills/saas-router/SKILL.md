@@ -35,9 +35,13 @@ Match the request (English **or** Spanish) against this table and activate the m
 | --- | --- |
 | "SaaS", "platform", "app", "MVP", "product" / "idea para", idea not fully defined | `product-discovery` → `architecture-primer` → build skills → `ui-design` |
 | "architecture", "how do I structure this", "scale", "what stack" / "cómo lo estructuro", "qué stack" | `architecture-primer` |
-| "landing", "sales page", "lead capture" / "página de ventas", "captar leads" | `landing-page` |
-| "dashboard", "admin", "backoffice", "internal tool" / "panel", "tablero" | `ui-design` (dashboard mode) |
-| Any UI/UX, component, colors, design system / "diseñá", "componente", "que se vea bien" | `ui-design` |
+| "landing", "sales page", "lead capture" / "página de ventas", "captar leads" | `landing-page` (structure + copy) **+** `design-taste-frontend` (visual execution) |
+| "portfolio", "marketing site", "agency site", "editorial/blog", "make a website that doesn't look AI-generated", website redesign / "portfolio", "sitio de marketing", "que no parezca hecho por IA", "rediseñar mi web" | `design-taste-frontend` |
+| "dashboard", "admin", "backoffice", "internal tool", "data table", product/app UI / "panel", "tablero", "interfaz de la app" | `ui-design` (dashboard mode) |
+| Component, colors, design system for an app, dark mode for product UI / "componente", "design system de la app" | `ui-design` |
+| "copy this design", "make it look like this screenshot/site", reference image of a web they like / "cloná esta web", "hacelo como esta captura" | `image-to-code` |
+
+> **Web vs. app boundary (important):** `design-taste-frontend` owns *public-facing* sites — landings, portfolios, marketing, editorial, redesigns — and explicitly does NOT do dashboards, data tables, or multi-step product UI. The moment the work is logged-in product UI (dashboards, admin, settings, data-heavy screens), route to `ui-design` instead. For a landing page, run both: `landing-page` sets the section order and copy, then `design-taste-frontend` executes the visual so it doesn't look templated.
 
 **Build the backend**
 

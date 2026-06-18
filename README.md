@@ -124,8 +124,10 @@ You: "I want to build a SaaS for X"  (English or Spanish)
   BUILD ├─ database/schema?   ──►  data-modeling
         ├─ API/endpoints?     ──►  api-design
         ├─ login/roles?       ──►  auth
-        ├─ UI / dashboard?    ──►  ui-design
-        ├─ landing page?      ──►  landing-page
+        ├─ dashboard / app UI?──►  ui-design
+        ├─ landing page?      ──►  landing-page + design-taste-frontend
+        ├─ website/portfolio? ──►  design-taste-frontend
+        ├─ clone a screenshot?──►  image-to-code
         │
   SECURE├─ any backend code   ──►  secure-coding  (runs throughout)
  MONEY  ├─ payments/billing?  ──►  payments
@@ -141,7 +143,7 @@ You: "I want to build a SaaS for X"  (English or Spanish)
 
 The **router never lets Claude write code or design blindly.** It triages first — like a nurse sending you to the right specialist — then hands off with full context so you're never asked the same thing twice.
 
-## The sixteen skills
+## The eighteen skills
 
 **Orchestration**
 
@@ -155,8 +157,10 @@ The **router never lets Claude write code or design blindly.** It triages first 
 | --- | --- | --- |
 | **`product-discovery`** | "I have an idea but…", "what should the MVP be?" | Separates problem from solution, validates the market, defines a prioritized MVP (P0/P1/P2). |
 | **`architecture-primer`** | "how do I structure this?", "what database?", "how does it scale?" | Discovery → decision tree → decisions with trade-offs, stack, Mermaid diagram. Based on the System Design Primer. |
-| **`ui-design`** | "design the UI", "pick colors", "dashboard layout" | Design system *before* code: three-tier tokens, responsive rules, tunable variance/motion/density. Bans the generic AI look. |
+| **`ui-design`** | "design the UI", "pick colors", "dashboard layout" | Design system *before* code: three-tier tokens, responsive rules, tunable variance/motion/density. Bans the generic AI look. **Owns product/app UI — dashboards, admin, data tables.** |
 | **`landing-page`** | "build a landing page", "sales page" | Proven section order + real copy + ready-to-use components. |
+| **`design-taste-frontend`** | "make a website that doesn't look AI-generated", "portfolio", "marketing site", "redesign my site" | Anti-slop visual execution for *public-facing* sites: reads the brief, maps to real design systems, dark-mode protocol, redesign protocol, strict pre-flight (no AI tells). Pairs with `landing-page` on landings. Not for dashboards. |
+| **`image-to-code`** | "clone this site", "make it look like this screenshot", reference image of a web | Image-first website-to-code: generates/analyzes the design image, then implements the site to match it closely. |
 
 **Build the backend**
 
@@ -252,6 +256,7 @@ Each skill encodes methodology from authoritative, community-validated sources:
 | `pwa` | [vite-plugin-pwa](https://github.com/vite-pwa/vite-plugin-pwa) (~4k⭐), [Workbox](https://github.com/GoogleChrome/workbox) (~13k⭐), [expo/skills](https://github.com/expo/skills) (native) |
 | `deployment` | GitHub Actions + Vercel docs, [sentry-javascript](https://github.com/getsentry/sentry-javascript) (~8.5k⭐), InsForge deploy (agentic-native, via `insforge-cli`) |
 | `ui-design` | [style-dictionary](https://github.com/style-dictionary/style-dictionary) (~4.7k⭐), Tailwind v4, [motion](https://github.com/motiondivision/motion) (~32k⭐) |
+| `design-taste-frontend`, `image-to-code` | [leonxlnx/taste-skill](https://github.com/Leonxlnx/taste-skill) (MIT) — taste-skill **v2**, vendored with attribution |
 
 ## Credits & attribution
 
@@ -260,6 +265,8 @@ Created by **Martín Olivero / [IamAutom](https://iamautom.com)**.
 `saas-builder` is free and open source under the [MIT License](./LICENSE) — you're welcome to **use it, fork it, build on it, and share it**, including commercially. The one thing the license requires (and that keeps open source healthy): **keep the copyright and attribution intact.** If you fork or reuse a substantial part, leave the `LICENSE` file and this credit in place, and a link back to the [original repository](https://github.com/MartinOlivero/saas-builder) is appreciated.
 
 Please don't republish it as your own work or imply it's endorsed by Martín Olivero / IamAutom. Building something *similar* from your own ideas is fair game — that's how the ecosystem grows.
+
+**Third-party skills included:** `design-taste-frontend` and `image-to-code` are vendored from [leonxlnx/taste-skill](https://github.com/Leonxlnx/taste-skill) (taste-skill v2), used under its MIT License with attribution to its author.
 
 ## License
 
