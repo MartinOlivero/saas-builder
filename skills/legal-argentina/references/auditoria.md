@@ -150,6 +150,78 @@ podés consultar el sistema, decilo en el informe: "verificado contra el código
 base". Es una frase que cuesta nada y evita que alguien salga a arreglar un problema que no
 tiene.
 
+## Caso especial: verificar una afirmación de aislamiento
+
+Casi toda política de seguridad de un SaaS multi-tenant dice alguna variante de **"cada
+organización ve solo sus datos"** o **"cada usuario ve solo lo suyo"**. Es la afirmación más
+fácil de escribir y la más difícil de verificar, porque *parece* comprobada apenas encontrás
+RLS activo. No alcanza.
+
+Cuatro chequeos, en orden. Los cuatro tienen que dar bien para que la frase sea cierta:
+
+**1. ¿Todas las tablas con datos tienen RLS activo?**
+```sql
+SELECT tablename FROM pg_tables WHERE schemaname='public'
+  AND tablename NOT IN (SELECT tablename FROM pg_tables WHERE rowsecurity);
+```
+Una tabla sin RLS **pero con grants a `anon`/`authenticated`** es lectura y escritura abierta.
+Una tabla de logs o debug suele ser la olvidada, y suele guardar payloads crudos.
+
+**2. ¿Hay políticas otorgadas al rol anónimo?**
+```sql
+SELECT tablename, policyname FROM pg_policies WHERE 'anon' = ANY(roles);
+```
+Debería dar cero. La clave anónima viaja en el bundle del navegador: es pública por diseño.
+
+**3. ¿Hay políticas con condición trivialmente verdadera?**
+```sql
+SELECT tablename, policyname, roles FROM pg_policies
+ WHERE qual = 'true' OR with_check = 'true';
+```
+Aceptable solo para un rol de administración server-side. Para un rol de usuario, anula el
+aislamiento.
+
+**4. ⚠️ ¿Las políticas de UPDATE permiten cambiar columnas de privilegio?**
+
+Este es el que se pasa por alto, y el más grave. **RLS filtra filas, no columnas.** Una
+política que parece impecable:
+
+```sql
+CREATE POLICY self_update ON profiles FOR UPDATE USING (id = auth.uid());
+```
+
+deja que el usuario edite **cualquier columna de su propia fila** — incluidas `role`,
+`org_id`, `plan` o `is_admin`. O sea: se asciende a administrador y se muda a la organización
+que quiera, con un PATCH a su propio perfil.
+
+> Caso real: en un CRM multi-tenant, un usuario recién registrado (que entra como rol básico
+> y sin organización) podía hacer PATCH sobre su perfil, ponerse `role='super_admin'` y el
+> `org_id` de otra empresa, y quedar adentro con permisos totales. Verificado con un usuario
+> de prueba: HTTP 200, aplicado. **Mientras eso existió, la frase "separación por organización"
+> del documento era falsa para cualquiera que se registrara.**
+
+Cómo detectarlo:
+```bash
+# ¿Hay policies de UPDATE sobre tablas que tengan columnas de privilegio?
+grep -rniE "for update" migrations/*.sql
+grep -rniE "\b(role|rol|org_id|tenant_id|plan|is_admin|is_superuser)\b" migrations/*.sql
+```
+Si las dos listas se cruzan en una tabla, hay que ver cómo se impide el cambio de esa columna.
+Las defensas válidas son un **trigger `BEFORE UPDATE`** que rechace el cambio, una vista con
+`WITH CHECK OPTION`, o revocar el `UPDATE` de esa columna (`REVOKE UPDATE (role) ON ...`).
+Que la interfaz no muestre el campo **no es una defensa**: la API acepta el PATCH igual.
+
+### Cómo redactarlo
+
+Si el aislamiento falla, es 🔴 **CONTRADICCIÓN**, no incumplimiento — el documento afirma una
+protección que no existe. Y va con una nota que el usuario necesita leer: **esto se arregla en
+el producto antes que en el texto.** Cambiar la frase del documento para que deje de mentir es
+la solución equivocada: la promesa estaba bien, lo que faltaba era cumplirla.
+
+Si el aislamiento está bien, decilo en el informe con los números —cuántas tablas con RLS,
+cuántas políticas anónimas, si las columnas de privilegio están protegidas—, porque es la
+afirmación que un cliente técnico va a querer ver respaldada.
+
 ## Contradicciones documento ↔ código
 
 **La razón de ser del modo auditoría.** Cada una de estas es una afirmación falsa firmada por
