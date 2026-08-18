@@ -1,13 +1,13 @@
 ---
 name: legal-docs
-description: This skill should be used when a SaaS or digital product needs its legal documents — terms of service, privacy policy, security policy, consumer buttons — written from scratch or audited against the real codebase. Covers Argentina (Ley 25.326, Ley 24.240, Disp. 954/2025), the European Union (GDPR) and the United States (state privacy laws, call-recording consent, BIPA, FTC Section 5, TCPA), with verified normative tables; it names what it does not cover instead of faking it. Trigger phrases (Spanish) include "términos y condiciones", "política de privacidad", "política de seguridad", "botón de arrepentimiento", "botón de baja", "legales para mi SaaS", "auditá mis legales", "¿cumplo con el RGPD?", "Ley 25.326", "AAIP", "necesito los legales antes de lanzar". Trigger phrases (English) include "terms and conditions", "privacy policy", "GDPR compliance", "audit my legal docs", "do I need a DPO", "data processing agreement", "CCPA", "can I record this call", "BIPA". Use it INSTEAD of generic templates: it deduces the document from the actual schema, providers and pixels, and in audit mode it compares what the published text promises against what the code does.
+description: This skill should be used when a SaaS or digital product needs its legal documents — terms of service, privacy policy, security policy, consumer buttons — written from scratch or audited against the real codebase. Covers Argentina (Ley 25.326, Ley 24.240, Disp. 954/2025), the European Union (GDPR), the United States (state privacy laws, call-recording consent, BIPA, FTC Section 5, TCPA), Brazil (LGPD) and the United Kingdom (UK GDPR + DUAA 2025), with verified normative tables; it names what it does not cover instead of faking it. Trigger phrases (Spanish) include "términos y condiciones", "política de privacidad", "política de seguridad", "botón de arrepentimiento", "botón de baja", "legales para mi SaaS", "auditá mis legales", "¿cumplo con el RGPD?", "Ley 25.326", "AAIP", "necesito los legales antes de lanzar". Trigger phrases (English) include "terms and conditions", "privacy policy", "GDPR compliance", "audit my legal docs", "do I need a DPO", "data processing agreement", "CCPA", "can I record this call", "BIPA", "LGPD", "ANPD", "ICO", "UK GDPR". Use it INSTEAD of generic templates: it deduces the document from the actual schema, providers and pixels, and in audit mode it compares what the published text promises against what the code does.
 ---
 
 # Legales para productos digitales
 
 Genera y audita documentos legales deduciéndolos del **código real**, no de una plantilla.
-Cubre **Argentina**, la **Unión Europea** y **Estados Unidos**, cada una con su tabla
-normativa verificada contra fuente primaria.
+Cubre **Argentina, Unión Europea, Estados Unidos, Brasil y Reino Unido**, cada una con su
+tabla normativa verificada contra fuente primaria.
 
 **Por qué existe:** los generadores de legales rellenan un formulario y producen un texto
 genérico que describe un producto que no es el tuyo. Esta skill hace lo contrario: lee el
@@ -44,8 +44,8 @@ Si alguno se rompe, la salida no sirve. No son sugerencias.
 | 🇦🇷 **Argentina** | ✅ verificada 2026-08-17 | `references/normativa-ar.md` |
 | 🇪🇺 **Unión Europea (RGPD)** | ✅ verificada 2026-08-18 | `references/normativa-eu.md` |
 | 🇺🇸 **Estados Unidos** (leyes estatales, grabación de llamadas, BIPA, FTC §5, TCPA) | ✅ verificada 2026-08-18 | `references/normativa-us.md` |
-| 🇧🇷 Brasil (LGPD) | ❌ no cubierta | — |
-| Reino Unido (UK GDPR) | ⚠️ parcial: se parece al RGPD, pero es régimen propio | — |
+| 🇧🇷 **Brasil (LGPD)** | ✅ verificada 2026-08-18 | `references/normativa-br.md` |
+| 🇬🇧 **Reino Unido (UK GDPR)** | ✅ verificada 2026-08-18 | `references/normativa-uk.md` — solo las diferencias; leer junto con la europea |
 
 **Lo no cubierto se nombra, no se improvisa.** El valor de esta skill es que cada norma está
 verificada contra fuente primaria con su artículo y su plazo. Un régimen escrito de memoria no
@@ -83,13 +83,17 @@ incluso gratis).
 | Opera y vende en Argentina | `normativa-ar.md` |
 | Opera desde Argentina, vende a la UE | **las dos** — y se cumple la más exigente de cada fila |
 | Opera desde Argentina, vende a EEUU | `normativa-ar.md` + `normativa-us.md` |
-| Vende a los tres mercados | **las tres tablas.** Ver § Cuando aplican varias |
+| Vende a Brasil | sumar `normativa-br.md` |
+| Vende al Reino Unido | sumar `normativa-eu.md` **y** `normativa-uk.md` (la británica solo lista diferencias) |
+| Vende a varios mercados | **todas las tablas que apliquen.** Ver § Cuando aplican varias |
 | Sin ningún vínculo con Argentina ni la UE | **Frenar.** Decir qué haría falta y ofrecer verificarlo |
 
 ### Cuando aplican varias
 
-Las tablas comparativas resuelven los conflictos fila por fila: § Diferencias clave con
-Argentina en `normativa-eu.md`, y § Diferencias con Argentina y la UE en `normativa-us.md`.
+Cada tabla cierra con una comparación que resuelve los conflictos fila por fila. La más útil
+cuando aplican tres o más es § Diferencias con RGPD y con Argentina de `normativa-br.md`, que
+pone los plazos de las cuatro juntos: **10 días corridos** (AR) · **15 días** (BR) · **1 mes**
+(UE y UK).
 
 Tres reglas que valen siempre:
 
