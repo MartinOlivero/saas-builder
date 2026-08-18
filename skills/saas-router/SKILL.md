@@ -57,6 +57,13 @@ Match the request (English **or** Spanish) against this table and activate the m
 | --- | --- |
 | Writing any endpoint / input / data write, "is this secure", "rate limit", "secrets" / "esto es seguro", "manejar datos de usuarios" | `secure-coding` (runs alongside backend work) |
 | "payments", "Stripe", "subscriptions", "pricing", "billing" / "cobrar", "suscripciones", "precios" | `payments` |
+| "terms and conditions", "privacy policy", "legal docs", "audit my legal docs", Argentine users or entity / "términos y condiciones", "política de privacidad", "legales", "botón de arrepentimiento", "auditá mis legales" | `legal-argentina` |
+
+
+> **Alcance de `legal-argentina`:** cubre **solo Argentina** (Ley 25.326, Ley 24.240,
+> Disp. 954/2025). Enrutá a esta skill cuando el responsable, los usuarios o los servidores
+> toquen Argentina. Si el producto tiene usuarios en la UE o Brasil, la skill lo dice y **no
+> finge cubrir RGPD ni LGPD**: eso es trabajo aparte.
 
 **Polish & ship**
 
@@ -82,7 +89,8 @@ A from-scratch SaaS runs through these phases. Each feeds the next — don't ski
 3. **Build** — `data-modeling` (the schema) → `api-design` (the endpoints) → `auth` (who can do what) → `ui-design` (the interface). **`secure-coding` runs throughout**, not as a final step.
 4. **Monetize** — `payments` when it's time to charge.
 5. **Polish** — `frontend-performance`, `accessibility`, `technical-seo`, `pwa` as the product matures.
-6. **Ship** — `pre-ship-security` for a final security review of the finished code, then `deployment` for CI/CD, monitoring, and rollback.
+6. **Legal (Argentina)** — `legal-argentina` once the schema, the providers and the billing are settled: the documents are deduced from what the product actually stores and from where, so they can't be written earlier. Skip if nothing about the product touches Argentina.
+7. **Ship** — `pre-ship-security` for a final security review of the finished code, then `deployment` for CI/CD, monitoring, and rollback.
 
 Building UI before the MVP is defined, or picking a stack before knowing the scale, produces rework. But `secure-coding` is never deferred — preventing a vulnerability is always cheaper than auditing one out later.
 

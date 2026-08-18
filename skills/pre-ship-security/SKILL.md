@@ -51,6 +51,22 @@ Based on Discovery answer 1, decide whether a deeper review is required — and 
   - Fuzzing: only if there's parsing, crypto, or native code — **AFL++, libFuzzer** (the testing-handbook skills). Not relevant to a typical CRUD SaaS.
 - **Standard low-risk CRUD SaaS → the checks above are a reasonable bar for launch.** Say so honestly: this is a *review*, not a guarantee.
 
+## Argentina
+
+If the product has users or a legal entity in Argentina, run **`legal-argentina`** in audit
+mode before shipping. Two obligations from 2025 that almost no product has implemented yet,
+because they are newer than most templates:
+
+- **Botón de arrepentimiento** and **botón de baja de servicio** (Disposición 954/2025) —
+  both required "a simple vista, en lugar destacado y en el primer acceso", with no prior
+  login. A link in the footer no longer satisfies this.
+- Any provider outside the AAIP adequacy list (**the US is not on it**) needs the
+  international transfer declared with a legal basis.
+
+That skill also compares the published legal text against the actual code, which catches the
+worst class of problem: a policy promising encryption, deletion or "we don't share data" that
+the codebase contradicts.
+
 ## Output
 
 Deliver: the scan results (audit + secrets), a pass/fail list against the checklist with the exact `file:line` of anything to fix, and a clear verdict — **"safe to ship at this risk level"**, **"fix these N items first"**, or **"high-risk: get a deep audit"**. Never claim the app is fully secure.
