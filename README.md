@@ -191,14 +191,14 @@ The **router never lets Claude write code or design blindly.** It triages first 
 | **`technical-seo`** | "improve SEO", "meta tags", "no preview on WhatsApp" | Per-page OG/Twitter tags, sitemap/robots, JSON-LD, and the SPA-prerender fix so crawlers actually see your content. |
 | **`pwa`** | "make it a PWA", "work offline", "push notifications" | Installable + offline with `vite-plugin-pwa`, the right caching strategy, and the stale-service-worker fix. |
 | **`pre-ship-security`** | "is this safe to ship?", "pre-launch check", "did I miss anything?" | A fast pre-deploy security review (npm audit + secret scan + OWASP checklist), escalating to deep-audit tools only when the app is high-risk. Not a deep audit — it tells you when you need one. |
-| **`legal-docs`** | "términos y condiciones", "política de privacidad", "GDPR compliance", "auditá mis legales" | Terms, privacy and security policy deduced from the real schema, providers and pixels — plus an audit mode that compares what the published text promises against what the code does. Covers **Argentina** and the **EU (GDPR)** with verified normative tables, and names what it does not cover instead of faking it. |
+| **`legal-docs`** | "términos y condiciones", "política de privacidad", "GDPR compliance", "auditá mis legales" | Terms, privacy and security policy deduced from the real schema, providers and pixels — plus an audit mode that compares what the published text promises against what the code does. Covers **Argentina**, the **EU (GDPR)** and the **US** (state laws, call-recording consent, BIPA, FTC §5, TCPA) with verified normative tables, and names what it does not cover instead of faking it. |
 | **`deployment`** | "deploy this", "CI/CD", "Sentry", "rollback" | Uses what Vercel gives free, adds a GitHub Actions CI gate, Sentry with source maps, env hygiene, and a rollback runbook. |
 
 
 ### ⚠️ `legal-docs` and the shelf life of law
 
 Legal content expires. The normative tables in `legal-docs` were **verified against primary
-sources on 2026-08-17 (Argentina) and 2026-08-18 (EU)** (InfoLeg, Boletín Oficial, argentina.gob.ar), and the skill
+sources on 2026-08-17 (Argentina) and 2026-08-18 (EU and US)** (InfoLeg, Boletín Oficial, argentina.gob.ar), and the skill
 forces a currency check on every run before writing a document — it does not trust what the
 model remembers.
 
@@ -287,7 +287,7 @@ Each skill encodes methodology from authoritative, community-validated sources:
 | `auth` | InsForge Auth (agentic-native), [Better Auth](https://github.com/better-auth/better-auth) (~28k⭐), [Auth.js](https://github.com/nextauthjs/next-auth) (~28k⭐), Clerk, Supabase Auth |
 | `secure-coding` | [OWASP Cheat Sheet Series](https://github.com/OWASP/CheatSheetSeries) (~29k⭐), OWASP Top 10:2021, [GDPR.eu](https://gdpr.eu), [gitleaks](https://github.com/gitleaks/gitleaks) (~18k⭐) |
 | `pre-ship-security` | OWASP Cheat Sheet Series (~29k⭐), `npm audit`, [gitleaks](https://github.com/gitleaks/gitleaks) (~18k⭐), Helmet; escalates to Semgrep/CodeQL, Trail of Bits, testing-handbook |
-| `legal-docs` | **AR:** Ley 25.326, Ley 24.240, CCyC arts. 1092-1122, Res. AAIP 47/2018, Res. AAIP 126/2024, Disp. DNPDP 60/2016 + Res. AAIP 34/2019, Disposición 954/2025, Decreto 55/2025 (InfoLeg / Boletín Oficial / argentina.gob.ar). **EU:** Reglamento (UE) 2016/679 arts. 3, 6, 12-22, 27, 28, 30, 32-35, 37, 44-49, 83; Directiva 2002/58 (ePrivacy); decisiones de adecuación de la Comisión; EU-US Data Privacy Framework (EUR-Lex / EDPB / Comisión Europea) |
+| `legal-docs` | **AR:** Ley 25.326, Ley 24.240, CCyC arts. 1092-1122, Res. AAIP 47/2018, Res. AAIP 126/2024, Disp. DNPDP 60/2016 + Res. AAIP 34/2019, Disposición 954/2025, Decreto 55/2025 (InfoLeg / Boletín Oficial / argentina.gob.ar). **EU:** Reglamento (UE) 2016/679 arts. 3, 6, 12-22, 27, 28, 30, 32-35, 37, 44-49, 83; Directiva 2002/58 (ePrivacy); decisiones de adecuación de la Comisión; EU-US Data Privacy Framework (EUR-Lex / EDPB / Comisión Europea). **US:** state wiretapping/all-party consent laws, BIPA (740 ILCS 14), 20 state comprehensive privacy laws, FTC Act §5, TCPA, CAN-SPAM, COPPA |
 | `payments` | [stripe-samples](https://github.com/stripe-samples), Stripe Customer Portal docs, Stripe MCP, InsForge Stripe integration (agentic-native) |
 | `frontend-performance` | [GoogleChrome/web-vitals](https://github.com/GoogleChrome/web-vitals) (~8.5k⭐), web.dev, Vite build docs |
 | `accessibility` | [w3c/wcag](https://github.com/w3c/wcag) 2.2, [axe-core](https://github.com/dequelabs/axe-core) (~7k⭐), [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) (~27k⭐) |

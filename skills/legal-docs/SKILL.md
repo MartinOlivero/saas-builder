@@ -1,13 +1,13 @@
 ---
 name: legal-docs
-description: This skill should be used when a SaaS or digital product needs its legal documents — terms of service, privacy policy, security policy, consumer buttons — written from scratch or audited against the real codebase. Covers Argentina (Ley 25.326, Ley 24.240, Disp. 954/2025) and the European Union (GDPR), with verified normative tables; it names what it does not cover instead of faking it. Trigger phrases (Spanish) include "términos y condiciones", "política de privacidad", "política de seguridad", "botón de arrepentimiento", "botón de baja", "legales para mi SaaS", "auditá mis legales", "¿cumplo con el RGPD?", "Ley 25.326", "AAIP", "necesito los legales antes de lanzar". Trigger phrases (English) include "terms and conditions", "privacy policy", "GDPR compliance", "audit my legal docs", "do I need a DPO", "data processing agreement". Use it INSTEAD of generic templates: it deduces the document from the actual schema, providers and pixels, and in audit mode it compares what the published text promises against what the code does.
+description: This skill should be used when a SaaS or digital product needs its legal documents — terms of service, privacy policy, security policy, consumer buttons — written from scratch or audited against the real codebase. Covers Argentina (Ley 25.326, Ley 24.240, Disp. 954/2025), the European Union (GDPR) and the United States (state privacy laws, call-recording consent, BIPA, FTC Section 5, TCPA), with verified normative tables; it names what it does not cover instead of faking it. Trigger phrases (Spanish) include "términos y condiciones", "política de privacidad", "política de seguridad", "botón de arrepentimiento", "botón de baja", "legales para mi SaaS", "auditá mis legales", "¿cumplo con el RGPD?", "Ley 25.326", "AAIP", "necesito los legales antes de lanzar". Trigger phrases (English) include "terms and conditions", "privacy policy", "GDPR compliance", "audit my legal docs", "do I need a DPO", "data processing agreement", "CCPA", "can I record this call", "BIPA". Use it INSTEAD of generic templates: it deduces the document from the actual schema, providers and pixels, and in audit mode it compares what the published text promises against what the code does.
 ---
 
 # Legales para productos digitales
 
 Genera y audita documentos legales deduciéndolos del **código real**, no de una plantilla.
-Cubre **Argentina** y la **Unión Europea**, cada una con su tabla normativa verificada contra
-fuente primaria.
+Cubre **Argentina**, la **Unión Europea** y **Estados Unidos**, cada una con su tabla
+normativa verificada contra fuente primaria.
 
 **Por qué existe:** los generadores de legales rellenan un formulario y producen un texto
 genérico que describe un producto que no es el tuyo. Esta skill hace lo contrario: lee el
@@ -43,7 +43,7 @@ Si alguno se rompe, la salida no sirve. No son sugerencias.
 | --- | --- | --- |
 | 🇦🇷 **Argentina** | ✅ verificada 2026-08-17 | `references/normativa-ar.md` |
 | 🇪🇺 **Unión Europea (RGPD)** | ✅ verificada 2026-08-18 | `references/normativa-eu.md` |
-| 🇺🇸 Estados Unidos (CCPA/CPRA, grabación de llamadas por estado, BIPA) | ❌ no cubierta | — |
+| 🇺🇸 **Estados Unidos** (leyes estatales, grabación de llamadas, BIPA, FTC §5, TCPA) | ✅ verificada 2026-08-18 | `references/normativa-us.md` |
 | 🇧🇷 Brasil (LGPD) | ❌ no cubierta | — |
 | Reino Unido (UK GDPR) | ⚠️ parcial: se parece al RGPD, pero es régimen propio | — |
 
@@ -82,11 +82,26 @@ incluso gratis).
 | --- | --- |
 | Opera y vende en Argentina | `normativa-ar.md` |
 | Opera desde Argentina, vende a la UE | **las dos** — y se cumple la más exigente de cada fila |
-| Opera desde Argentina, vende a EEUU o Brasil | `normativa-ar.md` + **avisar** que ese mercado no está cubierto |
+| Opera desde Argentina, vende a EEUU | `normativa-ar.md` + `normativa-us.md` |
+| Vende a los tres mercados | **las tres tablas.** Ver § Cuando aplican varias |
 | Sin ningún vínculo con Argentina ni la UE | **Frenar.** Decir qué haría falta y ofrecer verificarlo |
 
-Cuando aplican las dos, la tabla de **§ Diferencias clave con Argentina** de `normativa-eu.md`
-resuelve la mayoría de los conflictos: dice qué plazo y qué obligación gana en cada tema.
+### Cuando aplican varias
+
+Las tablas comparativas resuelven los conflictos fila por fila: § Diferencias clave con
+Argentina en `normativa-eu.md`, y § Diferencias con Argentina y la UE en `normativa-us.md`.
+
+Tres reglas que valen siempre:
+
+1. **Gana la más exigente de cada fila.** Un producto argentino que vende a Europa responde
+   accesos en 10 días corridos (plazo argentino) **y** notifica brechas en 72 horas
+   (obligación europea).
+2. **Los umbrales son por jurisdicción, no globales.** Un SaaS chico puede estar alcanzado de
+   lleno por la ley argentina y por el RGPD, y quedar **exento** de casi todas las leyes
+   estatales de EEUU. Decirlo es más honesto que fingir cumplimiento total.
+3. **Si el producto graba llamadas y tiene un solo usuario en EEUU, se pide consentimiento de
+   todos los participantes, siempre.** No hay forma operable de decidir según el estado en
+   tiempo real, y en 11 estados grabar sin permiso puede ser delito penal.
 
 **Después, la vigencia.** Correr § Verificación obligatoria de cada tabla cargada. Son pocas
 consultas y evitan escribir contra una norma muerta: en 18 meses cambiaron tres cosas centrales
@@ -209,6 +224,7 @@ promesa estaba bien, lo que faltaba era cumplirla.
 - La skill produce un borrador informado y verificable. **No reemplaza a un abogado**, y eso
   tiene que quedar escrito en la salida al usuario y en el pie de cada documento.
 - Productos que necesitan revisión profesional sí o sí: los que **graban o transcriben
-  llamadas** (varios estados de EEUU exigen consentimiento de todas las partes, e Illinois
-  trata la voz como dato biométrico bajo BIPA), los que **analizan personas con IA**, y los que
-  tratan **datos de salud, de menores o financieros**.
+  llamadas**, los que **identifican hablantes por voz** (riesgo BIPA, con acción privada y
+  daños por persona), los que **analizan personas con IA** para decisiones que las afectan, y
+  los que tratan **datos de salud, de menores o financieros**. En estos casos el borrador sirve
+  para llegar preparado a la consulta, no para reemplazarla.

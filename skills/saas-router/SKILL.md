@@ -61,10 +61,10 @@ Match the request (English **or** Spanish) against this table and activate the m
 
 
 > **Alcance de `legal-docs`:** cubre **Argentina** (Ley 25.326, Ley 24.240, Disp. 954/2025)
-> y la **Unión Europea** (RGPD), cada una con su tabla normativa verificada contra fuente.
-> Enrutá acá cuando el responsable, los usuarios o los servidores toquen cualquiera de las dos.
-> **No cubre** CCPA, LGPD ni las reglas estatales de EEUU sobre grabación de llamadas — y la
-> skill lo dice en vez de improvisarlas.
+> la **Unión Europea** (RGPD) y **Estados Unidos** (leyes estatales, consentimiento para
+> grabar llamadas, BIPA, FTC §5, TCPA), cada una con su tabla verificada contra fuente.
+> Enrutá acá cuando el responsable, los usuarios o los servidores toquen cualquiera de las tres.
+> **No cubre** LGPD ni UK GDPR — y la skill lo dice en vez de improvisarlas.
 
 **Polish & ship**
 
