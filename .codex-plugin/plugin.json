@@ -1,7 +1,7 @@
 {
   "name": "saas-builder",
-  "version": "2.3.0",
-  "description": "19 skills to build digital products end to end — discovery, architecture, secure backend, auth, payments, performance, accessibility, SEO, deploy, plus anti-slop frontend (landings, portfolios, redesigns), image-to-code and Argentine legal docs. A router skill picks the right specialist (English or Spanish).",
+  "version": "2.4.0",
+  "description": "19 skills to build digital products end to end — discovery, architecture, secure backend, auth, payments, performance, accessibility, SEO, deploy, plus anti-slop frontend (landings, portfolios, redesigns), image-to-code and legal docs (Argentina + GDPR). A router skill picks the right specialist (English or Spanish).",
   "author": {
     "name": "Martín Olivero / IamAutom",
     "url": "https://iamautom.com"

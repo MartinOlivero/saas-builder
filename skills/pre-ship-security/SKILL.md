@@ -51,9 +51,9 @@ Based on Discovery answer 1, decide whether a deeper review is required — and 
   - Fuzzing: only if there's parsing, crypto, or native code — **AFL++, libFuzzer** (the testing-handbook skills). Not relevant to a typical CRUD SaaS.
 - **Standard low-risk CRUD SaaS → the checks above are a reasonable bar for launch.** Say so honestly: this is a *review*, not a guarantee.
 
-## Argentina
+## Legal exposure
 
-If the product has users or a legal entity in Argentina, run **`legal-argentina`** in audit
+If the product has users or a legal entity in Argentina or the EU, run **`legal-docs`** in audit
 mode before shipping. Two obligations from 2025 that almost no product has implemented yet,
 because they are newer than most templates:
 
