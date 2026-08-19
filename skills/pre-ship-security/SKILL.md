@@ -53,7 +53,7 @@ Based on Discovery answer 1, decide whether a deeper review is required — and 
 
 ## Legal exposure
 
-If the product has users or a legal entity in Argentina or the EU, run **`legal-docs`** in audit
+If the product has users or a legal entity in Argentina, the EU, the US, Brazil or the UK, run the **`legal-docs`** plugin (`/plugin marketplace add MartinOlivero/saas-legal-docs`) in audit
 mode before shipping. Two obligations from 2025 that almost no product has implemented yet,
 because they are newer than most templates:
 

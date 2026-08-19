@@ -57,14 +57,23 @@ Match the request (English **or** Spanish) against this table and activate the m
 | --- | --- |
 | Writing any endpoint / input / data write, "is this secure", "rate limit", "secrets" / "esto es seguro", "manejar datos de usuarios" | `secure-coding` (runs alongside backend work) |
 | "payments", "Stripe", "subscriptions", "pricing", "billing" / "cobrar", "suscripciones", "precios" | `payments` |
-| "terms and conditions", "privacy policy", "GDPR compliance", "audit my legal docs", "do I need a DPO" / "términos y condiciones", "política de privacidad", "legales", "botón de arrepentimiento", "auditá mis legales" | `legal-docs` |
+| "terms and conditions", "privacy policy", "GDPR compliance", "audit my legal docs", "do I need a DPO" / "términos y condiciones", "política de privacidad", "legales", "botón de arrepentimiento", "auditá mis legales" | `legal-docs` — **separate plugin**, see note below |
 
 
-> **Alcance de `legal-docs`:** cubre **Argentina** (Ley 25.326, Ley 24.240, Disp. 954/2025)
-> la **Unión Europea** (RGPD) y **Estados Unidos** (leyes estatales, consentimiento para
-> grabar llamadas, BIPA, FTC §5, TCPA), cada una con su tabla verificada contra fuente.
-> Enrutá acá cuando el responsable, los usuarios o los servidores toquen cualquiera de las tres.
-> **No cubre** LGPD ni UK GDPR — y la skill lo dice en vez de improvisarlas.
+> **`legal-docs` vive en su propio plugin**, no en saas-builder:
+> `/plugin marketplace add MartinOlivero/saas-legal-docs` → `/plugin install legal-docs`
+>
+> Está aparte porque la normativa envejece a otro ritmo que el resto de este plugin, y una
+> tabla legal desactualizada hace daño real. Cubre Argentina, UE, EEUU, Brasil y Reino Unido,
+> cada una con su tabla verificada contra fuente primaria y con fecha.
+>
+> **Si no está instalado, NO improvises los legales.** Escribir una política de privacidad de
+> memoria produce justo lo que esa skill existe para evitar: un documento que describe otro
+> producto y cita normas que quizá ya no rigen. Decile al usuario que instale el plugin. Si
+> insiste en avanzar igual, lo único responsable sin él es (a) pedirle razón social,
+> identificación fiscal, domicilio y correo de contacto, que son obligatorios en toda
+> jurisdicción, (b) no afirmar nada que no hayas verificado en el código, y (c) advertirle que
+> el borrador no está respaldado por normativa verificada.
 
 **Polish & ship**
 
@@ -90,7 +99,7 @@ A from-scratch SaaS runs through these phases. Each feeds the next — don't ski
 3. **Build** — `data-modeling` (the schema) → `api-design` (the endpoints) → `auth` (who can do what) → `ui-design` (the interface). **`secure-coding` runs throughout**, not as a final step.
 4. **Monetize** — `payments` when it's time to charge.
 5. **Polish** — `frontend-performance`, `accessibility`, `technical-seo`, `pwa` as the product matures.
-6. **Legal** — `legal-docs` once the schema, the providers and the billing are settled: the documents are deduced from what the product actually stores and from where, so they can't be written earlier. Covers Argentina and the EU; it names what it does not cover.
+6. **Legal** — the `legal-docs` plugin (separate install) once the schema, the providers and the billing are settled: the documents are deduced from what the product actually stores and from where, so they can't be written earlier.
 7. **Ship** — `pre-ship-security` for a final security review of the finished code, then `deployment` for CI/CD, monitoring, and rollback.
 
 Building UI before the MVP is defined, or picking a stack before knowing the scale, produces rework. But `secure-coding` is never deferred — preventing a vulnerability is always cheaper than auditing one out later.

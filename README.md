@@ -111,6 +111,10 @@ Every skill carries a one-line analogy like the two above — so you understand 
 - **ui-ux-pro-max** (~87k ⭐): `npx uipro@latest init --ai claude`
   `saas-builder` detects whether it is installed and uses it automatically. If it is not installed, `saas-builder` uses embedded design principles as a fallback.
 
+- **legal-docs**: `/plugin marketplace add MartinOlivero/saas-legal-docs`
+  Legal documents deduced from the code, for products touching Argentina, the EU, the US, Brazil
+  or the UK. `saas-builder` routes to it and refuses to improvise legal text without it.
+
 ### How detection works
 
 `saas-builder` checks for `ui-ux-pro-max` on every session start, via a `SessionStart` hook (`hooks/check-dependencies.sh`). If it is missing, you get a one-time install nudge; if it is present, the hook stays silent. Once installed, no further configuration is needed. The router and the architecture logic are fully independent and require nothing extra.
@@ -148,7 +152,7 @@ You: "I want to build a SaaS for X"  (English or Spanish)
 
 The **router never lets Claude write code or design blindly.** It triages first — like a nurse sending you to the right specialist — then hands off with full context so you're never asked the same thing twice.
 
-## The nineteen skills
+## The eighteen skills
 
 **Orchestration**
 
@@ -191,25 +195,33 @@ The **router never lets Claude write code or design blindly.** It triages first 
 | **`technical-seo`** | "improve SEO", "meta tags", "no preview on WhatsApp" | Per-page OG/Twitter tags, sitemap/robots, JSON-LD, and the SPA-prerender fix so crawlers actually see your content. |
 | **`pwa`** | "make it a PWA", "work offline", "push notifications" | Installable + offline with `vite-plugin-pwa`, the right caching strategy, and the stale-service-worker fix. |
 | **`pre-ship-security`** | "is this safe to ship?", "pre-launch check", "did I miss anything?" | A fast pre-deploy security review (npm audit + secret scan + OWASP checklist), escalating to deep-audit tools only when the app is high-risk. Not a deep audit — it tells you when you need one. |
-| **`legal-docs`** | "términos y condiciones", "política de privacidad", "GDPR compliance", "auditá mis legales" | Terms, privacy and security policy deduced from the real schema, providers and pixels — plus an audit mode that compares what the published text promises against what the code does. Covers **Argentina**, the **EU (GDPR)**, the **US** (state laws, call-recording consent, BIPA, FTC §5, TCPA), **Brazil (LGPD)** and the **UK (UK GDPR + DUAA 2025)** — five jurisdictions, each with a normative table verified against primary sources. |
 | **`deployment`** | "deploy this", "CI/CD", "Sentry", "rollback" | Uses what Vercel gives free, adds a GitHub Actions CI gate, Sentry with source maps, env hygiene, and a rollback runbook. |
 
 
-### ⚠️ `legal-docs` and the shelf life of law
+### Legal documents → separate plugin
 
-Legal content expires. The normative tables in `legal-docs` were **verified against primary
-sources on 2026-08-17 (Argentina) and 2026-08-18 (EU, US, Brazil and UK)** (InfoLeg, Boletín Oficial, argentina.gob.ar), and the skill
-forces a currency check on every run before writing a document — it does not trust what the
-model remembers.
+Terms, privacy policy, security policy and consumer buttons live in
+**[saas-legal-docs](https://github.com/MartinOlivero/saas-legal-docs)**, not here:
 
-Why that matters: in the 18 months before that date, three central rules changed. Res. 424/2020
-(botón de arrepentimiento) was repealed by **Disposición 954/2025**, which also added a second
-mandatory button; COPREC was dissolved by **Decreto 55/2025**; and the sanctions regime moved to
-**Res. AAIP 126/2024**. A document citing any of the old ones is proof nobody reviewed it.
+```bash
+/plugin marketplace add MartinOlivero/saas-legal-docs
+/plugin install legal-docs
+```
 
-If you are reading this long after that date, re-verify before relying on it. And in any case:
-**this produces an informed draft, not a lawyer-reviewed document**, and the skill says so in
-its own output.
+It writes those documents from your actual schema, providers and pixels, and audits published
+legal text against the codebase — catching the policy that promises encryption you don't have,
+or claims you don't share data while a Meta pixel loads. Five jurisdictions (AR · EU · US · BR ·
+UK), each with a normative table verified against primary sources.
+
+**Why it's a separate plugin:** legal content expires on a different clock than everything else
+here. An architecture recommendation from 2026 still holds in 2028; a normative table doesn't —
+three central Argentine rules changed in the eighteen months before it was first verified. Keeping
+it separate means it can be corrected on its own schedule, and there's only ever one copy to keep
+current.
+
+`saas-builder` routes to it when the work is legal, and tells you to install it if it's missing.
+It will not improvise legal documents without it — writing a privacy policy from memory produces
+exactly what that plugin exists to prevent.
 
 ## Installation — works across CLI agents
 
@@ -287,7 +299,6 @@ Each skill encodes methodology from authoritative, community-validated sources:
 | `auth` | InsForge Auth (agentic-native), [Better Auth](https://github.com/better-auth/better-auth) (~28k⭐), [Auth.js](https://github.com/nextauthjs/next-auth) (~28k⭐), Clerk, Supabase Auth |
 | `secure-coding` | [OWASP Cheat Sheet Series](https://github.com/OWASP/CheatSheetSeries) (~29k⭐), OWASP Top 10:2021, [GDPR.eu](https://gdpr.eu), [gitleaks](https://github.com/gitleaks/gitleaks) (~18k⭐) |
 | `pre-ship-security` | OWASP Cheat Sheet Series (~29k⭐), `npm audit`, [gitleaks](https://github.com/gitleaks/gitleaks) (~18k⭐), Helmet; escalates to Semgrep/CodeQL, Trail of Bits, testing-handbook |
-| `legal-docs` | **AR:** Ley 25.326, Ley 24.240, CCyC arts. 1092-1122, Res. AAIP 47/2018, Res. AAIP 126/2024, Disp. DNPDP 60/2016 + Res. AAIP 34/2019, Disposición 954/2025, Decreto 55/2025 (InfoLeg / Boletín Oficial / argentina.gob.ar). **EU:** Reglamento (UE) 2016/679 arts. 3, 6, 12-22, 27, 28, 30, 32-35, 37, 44-49, 83; Directiva 2002/58 (ePrivacy); decisiones de adecuación de la Comisión; EU-US Data Privacy Framework (EUR-Lex / EDPB / Comisión Europea). **US:** state wiretapping/all-party consent laws, BIPA (740 ILCS 14), 20 state comprehensive privacy laws, FTC Act §5, TCPA, CAN-SPAM, COPPA. **BR:** Lei 13.709/2018 arts. 3, 7, 11, 18-19, 33, 41, 48, 52; Resoluções CD/ANPD 15/2024 e 19/2024. **UK:** UK GDPR, Data Protection Act 2018, Data (Use and Access) Act 2025, PECR, ICO |
 | `payments` | [stripe-samples](https://github.com/stripe-samples), Stripe Customer Portal docs, Stripe MCP, InsForge Stripe integration (agentic-native) |
 | `frontend-performance` | [GoogleChrome/web-vitals](https://github.com/GoogleChrome/web-vitals) (~8.5k⭐), web.dev, Vite build docs |
 | `accessibility` | [w3c/wcag](https://github.com/w3c/wcag) 2.2, [axe-core](https://github.com/dequelabs/axe-core) (~7k⭐), [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) (~27k⭐) |
