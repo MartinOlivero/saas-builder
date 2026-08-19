@@ -19,3 +19,33 @@ build/
 .env
 .env.*
 !.env.example
+
+# --- Skills del plugin: lista blanca -----------------------------------------
+# Este directorio también contiene symlinks a ~/.claude/skills (HyperFrames y
+# compañía) que NO son parte de saas-builder. Si se commitearan, quien clone el
+# repo se llevaría enlaces rotos apuntando a rutas de otra máquina.
+#
+# Por eso se ignora todo y se reincluye skill por skill: un `git add -A` no
+# puede arrastrar nada por accidente, y esta lista dice exactamente qué skills
+# componen el plugin.
+#
+# Para sumar una skill nueva: crearla y agregar su línea acá.
+skills/*
+!skills/accessibility/
+!skills/api-design/
+!skills/architecture-primer/
+!skills/auth/
+!skills/data-modeling/
+!skills/deployment/
+!skills/design-taste-frontend/
+!skills/frontend-performance/
+!skills/image-to-code/
+!skills/landing-page/
+!skills/payments/
+!skills/pre-ship-security/
+!skills/product-discovery/
+!skills/pwa/
+!skills/saas-router/
+!skills/secure-coding/
+!skills/technical-seo/
+!skills/ui-design/
