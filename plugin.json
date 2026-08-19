@@ -9,6 +9,14 @@
   "homepage": "https://github.com/MartinOlivero/saas-builder",
   "repository": "https://github.com/MartinOlivero/saas-builder",
   "license": "MIT",
-  "keywords": ["saas", "skills", "frontend", "backend", "architecture", "landing-page", "security", "payments"],
-  "skills": "skills/"
+  "keywords": [
+    "saas",
+    "skills",
+    "frontend",
+    "backend",
+    "architecture",
+    "landing-page",
+    "security",
+    "payments"
+  ]
 }
