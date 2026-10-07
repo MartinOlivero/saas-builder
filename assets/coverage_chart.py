@@ -22,18 +22,19 @@ rows = [
     ("Product discovery & MVP scoping",             100, "saas-builder",           True),
     ("Architecture & system design",                100, "saas-builder",           True),
     ("UI / UX & design system",                     100, "saas-builder",           True),
-    ("Backend — API, data modeling, auth",          100, "saas-builder",           True),
+    ("Backend — API, data, auth, multi-tenancy",    100, "saas-builder",           True),
+    ("Integrations & AI inside the product",        100, "saas-builder",           True),
     ("Applied security (prevention)",               100, "saas-builder",           True),
     ("Payments & monetization",                     100, "saas-builder",           True),
     ("Performance · a11y · SEO · PWA",              100, "saas-builder",           True),
-    ("Pre-ship security review",                    100, "saas-builder",           True),
+    ("Pre-ship security review & RLS audit",        100, "saas-builder",           True),
     ("Deploy · CI/CD · monitoring · rollback",      100, "saas-builder",           True),
     ("Deep security audit & fuzzing",               0,   "optional audit plugins", False),
     ("Codebase & docs audit",                       0,   "optional audit plugins", False),
 ]
 
 n = len(rows)
-fig, ax = plt.subplots(figsize=(13, 8.6))
+fig, ax = plt.subplots(figsize=(13, 9.2))
 fig.patch.set_facecolor(BG)
 ax.set_facecolor(BG)
 
@@ -67,13 +68,13 @@ ax.text(0,  n - 0.15, "WHAT saas-builder COVERS", ha="left", va="bottom", color=
 ax.text(104, n - 0.15, "COVERED BY", ha="left", va="bottom", color=DIM, fontsize=10, fontfamily="sans-serif")
 
 # title + subtitle
-fig.text(0.043, 0.95, "From idea to shipped product", fontsize=25, color=CREAM, fontweight="bold")
-fig.text(0.043, 0.905,
+fig.text(0.043, 0.953, "From idea to shipped product", fontsize=25, color=CREAM, fontweight="bold")
+fig.text(0.043, 0.911,
          "What saas-builder covers — and what it leaves to Superpowers and optional audit plugins.",
          fontsize=13.5, color=SUB)
 fig.text(0.043, 0.038, "Superpowers + saas-builder  =  idea → shipped product.    github.com/MartinOlivero/saas-builder",
          fontsize=11, color=DIM)
 
-plt.subplots_adjust(left=0.37, right=0.82, top=0.855, bottom=0.085)
+plt.subplots_adjust(left=0.37, right=0.82, top=0.864, bottom=0.08)
 fig.savefig("assets/coverage.png", dpi=200, facecolor=BG)
 print("wrote assets/coverage.png")
