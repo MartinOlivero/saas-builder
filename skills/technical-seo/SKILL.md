@@ -11,7 +11,9 @@ Analogy: an SPA is a book with a blank cover and blank first page until you open
 
 ## The SPA problem (state it upfront)
 
-A Vite SPA serves near-empty HTML; content and meta tags appear only after JS runs. Social crawlers (WhatsApp, Twitter, LinkedIn) **don't run JS at all**, and Googlebot does so unreliably. So SEO tags must be **injected server-side or prerendered** — client-only `react-helmet` alone won't show a preview on WhatsApp.
+A Vite SPA serves near-empty HTML; content and meta tags appear only after JS runs. Social crawlers (WhatsApp, Twitter, LinkedIn) **don't run JS at all**, so share previews need tags that are **injected server-side or prerendered** — client-only `react-helmet` alone won't show a preview on WhatsApp.
+
+**Be precise about Google, though.** Googlebot does render JavaScript: for one production SPA, Search Console's URL inspection showed the fully rendered page indexed. So do not migrate frameworks *for Google alone* — check your own site in Search Console first. What remains true: rendering is deferred, social bots never run JS, and you should not assume AI crawlers do. Prerender the public routes for those reasons.
 
 ## Discovery (max 3 questions, only if unknown)
 
@@ -48,6 +50,19 @@ Validate with Google's Rich Results Test.
 ## Step 5 — Performance is SEO
 
 Core Web Vitals feed ranking. Hand off to the `frontend-performance` skill: code-split routes, lazy-load below-the-fold images, serve modern image formats, keep third-party scripts async/minimal.
+
+## Field notes — check the live output, not the code
+
+Each of these shipped past a green build:
+
+- **No `robots.txt` or `sitemap.xml` at all**, no canonical tag, and `lang="en"` on a Spanish site. Request the files; read the `<html>` tag.
+- **A sitemap split in the middle of every URL** and a broken `Sitemap:` line — the base URL came from an environment variable with a trailing newline. Open the sitemap in a browser.
+- **Apex → `www` answered 307** instead of a permanent redirect.
+- **The social image rendered with the system font** because it was generated from a `file://` page where the web font never loaded. Look at the actual image.
+- **A font subset fell back silently**: only `latin-ext` was loaded, and that subset does not contain the basic Latin characters — it extends `latin`, it does not include it.
+- **Analytics proxied through a rewrite located every visitor in a data center** (see `deployment` field notes).
+
+Verify ownership by domain in Search Console and submit the sitemap there; it is also the only reliable way to see what Google actually rendered.
 
 ## Output
 

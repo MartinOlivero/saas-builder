@@ -54,6 +54,25 @@ Make RLS airtight:
 
 The schema here backs the `api-design` resources and the `auth` permission model. Pass the tenant strategy to both so endpoints and policies scope correctly.
 
+## Step 5 — Rules that only show up in production
+
+- **Money and stock invariants live in the database**: triggers on the state transition, `ON DELETE RESTRICT` on anything financial, corrections by compensating entries. A hidden button is not a constraint.
+- **The server sets derived and trusted values** (price, cost, totals). The client sends the inputs.
+- **One writer per state field.** Two code paths writing the same flag will disagree.
+- **Every pending state has a deadline**, something that enforces it, and a UI that shows it.
+- **Uniqueness under concurrency is a constraint** (a unique or partial unique index), never a check in code. Detect the conflict by SQLSTATE, not by message text.
+- **`ON CONFLICT DO NOTHING` is silent.** Make sure a historical row cannot be the conflict.
+- **A "day" belongs to a time zone.** Store instants in UTC; cut periods in the tenant's zone; recompute derived date columns with their source.
+- **Restore a backup once before you need it.**
+
+## Field notes
+
+`references/field-notes.md` holds 19 schema and data failures from production apps. The three that cost the most:
+
+1. A lost backend rebuilt from an export with no primary keys, truncated policies and no sequences.
+2. Stock at −420 because the only safeguard was a hidden button.
+3. Returning customers left unassigned forever by a silent `ON CONFLICT DO NOTHING`.
+
 ## Output
 
 Deliver: the DB choice with reason, the multi-tenancy strategy, the table definitions (DDL) with constraints and indexes, the RLS policies if multi-tenant, and the first migration file.

@@ -32,6 +32,7 @@ build/
 # Para sumar una skill nueva: crearla y agregar su línea acá.
 skills/*
 !skills/accessibility/
+!skills/ai-features/
 !skills/api-design/
 !skills/architecture-primer/
 !skills/auth/
@@ -40,11 +41,14 @@ skills/*
 !skills/design-taste-frontend/
 !skills/frontend-performance/
 !skills/image-to-code/
+!skills/integrations/
 !skills/landing-page/
+!skills/multi-tenancy/
 !skills/payments/
 !skills/pre-ship-security/
 !skills/product-discovery/
 !skills/pwa/
+!skills/rls-audit/
 !skills/saas-router/
 !skills/secure-coding/
 !skills/technical-seo/

@@ -1,7 +1,7 @@
 {
   "name": "saas-builder",
-  "version": "2.7.0",
-  "description": "Build a complete, professional digital product end to end — discovery, architecture, secure backend, auth, payments, performance, accessibility, SEO, and deploy — not generic AI output. A router skill asks 2-3 questions (English or Spanish), then activates the right specialist across the whole build lifecycle. Self-sufficient: pairs with Superpowers and needs nothing else.",
+  "version": "2.8.0",
+  "description": "Build a complete, professional digital product end to end — discovery, architecture, multi-tenancy, secure backend, auth, RLS audit, payments, integrations, AI features, performance, accessibility, SEO, and deploy — not generic AI output. A router skill asks 2-3 questions (English or Spanish), then activates the right specialist. Each skill carries field notes: failures from production apps that passed build, lint and tests. Self-sufficient: pairs with Superpowers and needs nothing else.",
   "author": {
     "name": "Martín Olivero / IamAutom",
     "url": "https://iamautom.com"
@@ -34,6 +34,14 @@
     "seo",
     "pwa",
     "deployment",
-    "ci-cd"
+    "ci-cd",
+    "multi-tenancy",
+    "rls",
+    "row-level-security",
+    "supabase",
+    "webhooks",
+    "integrations",
+    "llm",
+    "ai-features"
   ]
 }

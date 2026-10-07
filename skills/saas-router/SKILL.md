@@ -1,6 +1,6 @@
 ---
 name: saas-router
-description: This skill should be used FIRST whenever the user wants to create, build, design, ship, or prototype any digital product — a SaaS, web app, platform, MVP, landing page, sales page, dashboard, admin panel, backoffice, internal tool, API, database, auth, payments, or any user interface. Trigger phrases (English) include "build me a", "I want to create", "design a", "let's make a", "I have an idea for", "help me ship". Trigger phrases (Spanish) include "quiero construir", "armar una", "diseñar una", "hagamos un", "tengo una idea para", "necesito una app/SaaS/landing", "agregá login/pagos/base de datos", "subir a producción". It routes the request to the correct specialist skill instead of writing code or designing blindly.
+description: This skill should be used FIRST whenever the user wants to create, build, design, ship, or prototype any digital product — a SaaS, web app, platform, MVP, landing page, sales page, dashboard, admin panel, backoffice, internal tool, API, database, auth, payments, an integration, an AI feature, or any user interface. Trigger phrases (English) include "build me a", "I want to create", "design a", "let's make a", "I have an idea for", "help me ship". Trigger phrases (Spanish) include "quiero construir", "armar una", "diseñar una", "hagamos un", "tengo una idea para", "necesito una app/SaaS/landing", "agregá login/pagos/base de datos/IA", "integrá con", "subir a producción". It routes the request to the correct specialist skill instead of writing code or designing blindly.
 ---
 
 # SaaS Router
@@ -35,7 +35,7 @@ Match the request (English **or** Spanish) against this table and activate the m
 | --- | --- |
 | "SaaS", "platform", "app", "MVP", "product" / "idea para", idea not fully defined | `product-discovery` → `architecture-primer` → build skills → `ui-design` |
 | "architecture", "how do I structure this", "scale", "what stack" / "cómo lo estructuro", "qué stack" | `architecture-primer` |
-| "landing", "sales page", "lead capture" / "página de ventas", "captar leads" | `landing-page` (structure + copy) **+** `design-taste-frontend` (visual execution) |
+| "landing", "sales page", "lead capture" / "página de ventas", "captar leads" | `landing-page` (structure + copy) **+** `design-taste-frontend` (visual execution) — and the `landing-moment` plugin for the hero, if installed |
 | "portfolio", "marketing site", "agency site", "editorial/blog", "make a website that doesn't look AI-generated", website redesign / "portfolio", "sitio de marketing", "que no parezca hecho por IA", "rediseñar mi web" | `design-taste-frontend` |
 | "dashboard", "admin", "backoffice", "internal tool", "data table", product/app UI / "panel", "tablero", "interfaz de la app" | `ui-design` (dashboard mode) |
 | Component, colors, design system for an app, dark mode for product UI / "componente", "design system de la app" | `ui-design` |
@@ -50,13 +50,18 @@ Match the request (English **or** Spanish) against this table and activate the m
 | "design the API", "endpoint", "REST or GraphQL" / "diseñar la API", "un endpoint" | `api-design` |
 | "database", "schema", "model this data", "multi-tenant" / "base de datos", "modelar los datos" | `data-modeling` |
 | "login", "auth", "roles", "permissions", "SSO" / "agregar login", "roles", "permisos" | `auth` |
+| "organizations", "workspaces", "teams", "invite members", "a user in two companies", "demo account" / "varias empresas en la misma app", "invitar usuarios", "cuenta demo" | `multi-tenancy` → then `data-modeling` |
+| "integrate with", "webhook", "sync with their API", "connect Google/Meta account", "transactional email" / "integrar con", "recibir un webhook", "sincronizar con", "mails transaccionales" | `integrations` |
+| "add AI to the app", "chatbot", "AI assistant for my users", "summarize with AI", "AI costs", "bring your own key" / "agregar IA", "armar un chatbot", "el bot inventa cosas" | `ai-features` |
 
 **Secure & monetize**
 
 | User says / wants | Route to |
 | --- | --- |
 | Writing any endpoint / input / data write, "is this secure", "rate limit", "secrets" / "esto es seguro", "manejar datos de usuarios" | `secure-coding` (runs alongside backend work) |
-| "payments", "Stripe", "subscriptions", "pricing", "billing" / "cobrar", "suscripciones", "precios" | `payments` |
+| "payments", "Stripe", "Mercado Pago", "subscriptions", "pricing", "billing", "free trial" / "cobrar", "suscripciones", "precios" | `payments` |
+| "audit my RLS", "is my database exposed", "can users see each other's data", "anon key", "review my policies" / "auditá mi RLS", "¿se puede leer mi base con la anon key?" | `rls-audit` |
+| "how do I know this works", "is this actually tested", "prove the payment works" / "¿cómo compruebo que funciona?", "probalo de verdad" | `proof-first` — **separate plugin**, see note below |
 | "terms and conditions", "privacy policy", "GDPR compliance", "audit my legal docs", "do I need a DPO" / "términos y condiciones", "política de privacidad", "legales", "botón de arrepentimiento", "auditá mis legales" | `legal-docs` — **separate plugin**, see note below |
 
 
@@ -74,6 +79,10 @@ Match the request (English **or** Spanish) against this table and activate the m
 > identificación fiscal, domicilio y correo de contacto, que son obligatorios en toda
 > jurisdicción, (b) no afirmar nada que no hayas verificado en el código, y (c) advertirle que
 > el borrador no está respaldado por normativa verificada.
+
+> **Companion plugins by the same author — optional, never block on them:**
+> - **`proof-first`** (`/plugin marketplace add MartinOlivero/proof-first` → `/plugin install proof-first`) — refuses to take the agent's word that money, auth, user data or a deploy works; sends a clean-context verifier for evidence observable from outside. If it is not installed, use the outside-in checks in `pre-ship-security` Step 2b.
+> - **`landing-moment`** (`/plugin marketplace add MartinOlivero/landing-moment` → `/plugin install landing-moment`) — the method for a landing page's one authored interaction, with a cliche detector and a real-browser auditor. If it is not installed, `landing-page` carries the principle.
 
 **Polish & ship**
 
@@ -96,11 +105,13 @@ A from-scratch SaaS runs through these phases. Each feeds the next — don't ski
 
 1. **`product-discovery`** — define the problem, the user, and the MVP scope.
 2. **`architecture-primer`** — decide the high-level system design and stack.
-3. **Build** — `data-modeling` (the schema) → `api-design` (the endpoints) → `auth` (who can do what) → `ui-design` (the interface). **`secure-coding` runs throughout**, not as a final step.
+3. **Build** — `multi-tenancy` first if customers are organizations (the membership model shapes everything after it) → `data-modeling` (the schema) → `api-design` (the endpoints) → `auth` (who can do what) → `ui-design` (the interface). Add `integrations` when the product talks to a platform you don't control, and `ai-features` when it calls a model for its users. **`secure-coding` runs throughout**, not as a final step.
 4. **Monetize** — `payments` when it's time to charge.
 5. **Polish** — `frontend-performance`, `accessibility`, `technical-seo`, `pwa` as the product matures.
 6. **Legal** — the `legal-docs` plugin (separate install) once the schema, the providers and the billing are settled: the documents are deduced from what the product actually stores and from where, so they can't be written earlier.
-7. **Ship** — `pre-ship-security` for a final security review of the finished code, then `deployment` for CI/CD, monitoring, and rollback.
+7. **Ship** — `pre-ship-security` for a final security review of the finished code — plus `rls-audit` if the backend is Supabase, InsForge or another Postgres with an auto-generated API — then `deployment` for CI/CD, monitoring, and rollback.
+
+**Field notes.** Most skills carry a `references/field-notes.md`: failures from production apps that passed build, lint and tests, each with symptom, cause and how to check for it. When a specialist skill is active and the work is about to ship, read its field notes.
 
 Building UI before the MVP is defined, or picking a stack before knowing the scale, produces rework. But `secure-coding` is never deferred — preventing a vulnerability is always cheaper than auditing one out later.
 

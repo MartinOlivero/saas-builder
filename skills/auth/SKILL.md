@@ -55,6 +55,25 @@ Default for a fresh React + Vite + Postgres SaaS with no SSO need: **InsForge Au
 - **Provider available** → wire it (InsForge/Supabase/Clerk/Better Auth) and configure roles/orgs through it. On InsForge, its `insforge` and `insforge-integrations` skills wire auth — including external providers (Clerk/Auth0/WorkOS) into JWT-based RLS — so the agent sets it up end to end.
 - **No provider chosen / offline** → fall back to a well-known library (Better Auth or Lucia), httpOnly cookie sessions, bcrypt/argon2 password hashing, and the RBAC pattern above. Never block on a missing provider.
 
+## Step 5 — Verify the guard from outside
+
+Auth that has not been attacked with `curl` is assumed, not known. Before calling it done:
+
+- **Request every protected route with no session and look at the response body size**, not just the status. A redirect can carry the fully rendered page.
+- **Put the guard where it runs before rendering** (middleware), not in a layout — and confirm the middleware file is in the location your framework actually loads.
+- **The server validates the session token with the provider.** A readable cookie is not identity.
+- **Log out, then replay the old refresh token.** If it still mints access tokens, logout is cosmetic.
+- **Test in Safari** when the backend is on a different domain: its refresh cookie is a third-party cookie.
+- **OAuth callback is a public route** that exchanges the code; redirect parameters accept only paths starting with a single `/`.
+
+## Field notes
+
+`references/field-notes.md` holds 15 auth failures from production apps. The three that cost the most:
+
+1. A 307 redirect to login that carried 441 KB of customer data in its body.
+2. A middleware file in the wrong directory that never executed.
+3. Blank screens with no error: queries running as anonymous and RLS returning empty lists.
+
 ## Output
 
 Deliver: the provider recommendation with a one-line reason, the session/token decision, a concrete role model for this product, the protected-route guard wired in, and the multi-tenant scoping rule if B2B.

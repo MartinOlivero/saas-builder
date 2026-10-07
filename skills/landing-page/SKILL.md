@@ -36,9 +36,19 @@ Hand off to the `ui-design` skill to generate the design system (style, palette,
 
 **Delegation:** the design system itself is sourced per availability — if `ui-ux-pro-max` is installed, let it generate the system (optionally refined by `taste-skill`); if neither is installed, fall back to the embedded principles in `ui-design`. The landing page works either way; the originals just make it sharper. Never block on a missing dependency.
 
+**The page's one interactive moment:** if the **`landing-moment`** plugin is installed (`/plugin marketplace add MartinOlivero/landing-moment`), hand it the hero. Its method — one authored interaction derived from the page's own argument, echoed down the page, instead of an effect picked from a component library — is what keeps a landing from reading as a template, and it ships a cliche detector and a real-browser auditor. If it is not installed, apply the principle by hand: **one** moment that makes the promise visible, built from the product's real material, and no decorative effects elsewhere.
+
 ### Step 4 — Generate the copy, not just the code
 
 This skill writes the **base copy for every section** — headline, subhead, body, CTA labels — tailored to the offer and avatar. Code without copy is half a landing page.
+
+Read the finished copy as a stranger would. These slipped through on real pages:
+- **A verb that overstates the ask.** "Upload your billing" read as "hand over everything"; the product needed two columns. Say exactly what the visitor gives.
+- **An FAQ describing a process that no longer exists** (a manual step that had since been automated). Re-read the FAQ whenever the product changes.
+- **Two buttons with two amounts** read as two plans, even when they were the same plan billed two ways.
+- **A bare currency symbol** in a market with more than one currency.
+
+And measure the right thing: a campaign optimized for cheap visits delivered about 3,500 of them, with zero sign-ups. Optimize for the action, not the click.
 
 ### Step 5 — Stack and optional add-ons
 

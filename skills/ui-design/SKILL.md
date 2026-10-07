@@ -60,6 +60,27 @@ Never ship these:
 - **The AI default look:** Inter + purple gradient + heavy rounded cards. It screams "generated." Avoid it.
 - **Magic colors:** no raw hex values scattered in markup. Every color comes from the system tokens.
 - **Ignored states:** never deliver a UI without designing the empty, loading, and error states. They are part of the work, not an afterthought.
+- **A screen that lies:** never render "could not find out" as zero, empty or off. See *Honest states* below.
+
+## Honest states — three answers, not two
+
+Every piece of data on screen is in one of three conditions, and each needs its own rendering:
+
+| Condition | Example | Render |
+| --- | --- | --- |
+| **Known: yes** | 3 agents online | The value |
+| **Known: no** | 0 agents online | The empty state |
+| **Unknown** | The request failed or timed out | "Couldn't check" + retry — **never** the empty state |
+
+The third is the one that gets dropped: a failed request becomes an empty list, and the interface states something false with full confidence — "0 of 5 online", "no team members", "nothing was changed". In one production app this pattern was fixed eight separate times before it became a rule.
+
+Apply it to writes too:
+- **Confirm only what was confirmed.** "Invitation sent" only if the provider said so.
+- **Show the time of the last successful sync** instead of asserting the data is current.
+- **After a failed write to an external system, say "couldn't confirm"**, not "nothing changed" — the user will retry.
+- **Name the specific error for the specific case.** "Link unavailable" for a 404 only; anything else is a connection problem.
+
+Some defects only exist in the final artifact, so check the artifact: print styles that produce a blank page, a social image rendered with a fallback font, a font subset that silently falls back. A passing build says nothing about any of them.
 
 ## Design tokens — structure them in three tiers
 

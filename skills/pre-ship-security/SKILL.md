@@ -41,6 +41,21 @@ Re-check the finished code — the `secure-coding` rules, now **verified instead
 - **Errors** don't leak stack traces in prod; **logs** contain no PII, tokens, or passwords.
 - **Auth routes rate-limited**; passwords hashed with bcrypt/argon2.
 
+## Step 2b — Outside-in checks (from a terminal, against the deployed app)
+
+Reading the code tells you what it should do. These tell you what it does. Each one has found a real hole in an app whose tests were green:
+
+- **Protected routes, no session:** `curl -s -o /dev/null -w '%{http_code} %{size_download}\n' <url>`. A redirect with a large body is a data leak.
+- **Each guarded endpoint, both ends:** rejected without the credential *and* accepted with it. A 403 alone can be a typo.
+- **The database, with the public key:** read each non-public table; write to a row you do not own. On Supabase, InsForge or any Postgres + auto-API backend, run **`rls-audit`**.
+- **Secrets in the wrong files:** scan `docs/`, `*.md`, `*.json` exports and the git history — not only source.
+- **Environment variables:** pull production and grep for trailing newlines (see `deployment`).
+- **Headers:** CSP without `'unsafe-inline'` in `script-src`, HSTS, `frame-ancestors`. Then confirm analytics still records.
+- **Legal and policy pages:** return 200 on the live domain.
+- **Shared demo account:** try to spend money and to write through the API, not through the UI.
+
+Record what you ran and what came back. A check nobody can re-run is an opinion.
+
 ## Step 3 — Risk gate (escalate when needed)
 
 Based on Discovery answer 1, decide whether a deeper review is required — and be explicit that deep auditing is **out of this plugin's scope on purpose**:
@@ -49,6 +64,7 @@ Based on Discovery answer 1, decide whether a deeper review is required — and 
   - Static analysis: **Semgrep / CodeQL** (e.g. the `static-analysis` or Trail of Bits skills).
   - Dependency / supply-chain: **Dependabot, Snyk**, supply-chain auditors.
   - Fuzzing: only if there's parsing, crypto, or native code — **AFL++, libFuzzer** (the testing-handbook skills). Not relevant to a typical CRUD SaaS.
+- **Money, auth, user data or deploys were touched and nobody outside the agent confirmed the result →** the **`proof-first`** plugin (`/plugin marketplace add MartinOlivero/proof-first`) sends a clean-context verifier to gather evidence observable from outside and records it. Optional; without it, do Step 2b by hand.
 - **Standard low-risk CRUD SaaS → the checks above are a reasonable bar for launch.** Say so honestly: this is a *review*, not a guarantee.
 
 ## Legal exposure

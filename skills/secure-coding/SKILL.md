@@ -61,6 +61,29 @@ Apply the matching rule the instant you write the code. Each maps an OWASP 2021 
 - On Vite, only `VITE_`-prefixed vars reach the browser — a secret behind that prefix is a public leak.
 - Rotate by **add-new → redeploy → revoke-old**. Optionally run **gitleaks** as a pre-commit net.
 
+## Server decides, client asks
+
+The rule behind most real holes: **anything the client sends is a request, not a fact.**
+
+- **Prices, totals, roles, owners, statuses** — computed or checked on the server.
+- **File uploads** — the server builds the path (scoped to the user), chooses the bucket, restricts the type, caps the size.
+- **Identity** — from a token the server validates, never from a cookie or field the browser can edit.
+- **Never switch to the admin/service client to make a permission error go away.** That removes the permission. Find out why the user's own credentials were refused.
+
+## Public endpoints (no login)
+
+A form or endpoint anyone can call needs, at minimum: a captcha or equivalent, a honeypot field (named so autofill won't fill it), a rate cap that does not depend on the caller's IP, and sanitizing of every value that ends up in a message sent to someone else.
+
+## Field notes
+
+`references/field-notes.md` holds the security failures behind these rules — plus a working Content-Security-Policy recipe (per-request nonce, `strict-dynamic`, `Report-Only` rollout) and where secrets actually leak from. The three that cost the most:
+
+1. A storage path taken from the form, uploaded with the admin client.
+2. An order line saved at a client-chosen price.
+3. An API key published inside a Markdown notes file by `git add -A`.
+
+For database permissions on a BaaS, run `rls-audit`. For third-party webhooks, see `integrations`. For LLM calls, see `ai-features`.
+
 ## Output
 
 For each piece of code, deliver: the secure implementation, a one-line note on which risk it defends against, and any validation schema (`zod`) inline. When you spot a violation in existing code the user shows you, flag it with the fix — but the job is to write it safe the first time.

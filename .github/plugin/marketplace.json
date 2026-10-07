@@ -11,7 +11,7 @@
       "name": "saas-builder",
       "source": "./",
       "description": "Build digital products (SaaS, landing pages, dashboards, MVPs) end to end. Includes a router that picks the right specialist skill for the job.",
-      "version": "2.2.0",
+      "version": "2.8.0",
       "license": "MIT",
       "skills": "skills/"
     }

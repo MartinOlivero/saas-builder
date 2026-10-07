@@ -1,6 +1,6 @@
 # saas-builder — multi-CLI agent plugin to build a complete, secure SaaS
 
-[![Version](https://img.shields.io/badge/version-2.2.0-blue.svg)](https://github.com/MartinOlivero/saas-builder)
+[![Version](https://img.shields.io/badge/version-2.8.0-blue.svg)](https://github.com/MartinOlivero/saas-builder)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
 [![CLIs](https://img.shields.io/badge/CLIs-Claude%20Code%20·%20OpenCode%20·%20Gemini%20·%20Codex%20·%20Copilot-purple.svg)](#installation--works-across-cli-agents)
 
@@ -17,7 +17,7 @@
 
 **saas-builder** construye un producto digital completo de principio a fin —un SaaS, una landing, un dashboard o un MVP— con buenas decisiones de **diseño, arquitectura, backend, seguridad, pagos y deploy**, en vez del típico resultado genérico de IA.
 
-Son **18 skills** que se activan solas según lo que pidas (en español o en inglés): descubrimiento de producto, arquitectura, API, base de datos, autenticación, seguridad preventiva, Stripe, performance, accesibilidad, SEO, PWA, deploy, más frontend anti-IA (landings, portfolios) e image-to-code. Funciona con solo tener [Superpowers](https://github.com/obra/superpowers) instalado; nada más.
+Son **22 skills** que se activan solas según lo que pidas (en español o en inglés): descubrimiento de producto, arquitectura, API, base de datos, autenticación, seguridad preventiva, Stripe, performance, accesibilidad, SEO, PWA, deploy, más frontend anti-IA (landings, portfolios) e image-to-code. Funciona con solo tener [Superpowers](https://github.com/obra/superpowers) instalado; nada más.
 
 **Funciona en todos los CLIs de agentes** (Claude Code, OpenCode, Gemini CLI, Codex, Copilot CLI) porque su núcleo son Agent Skills portables, con un manifiesto nativo por plataforma. Probado en Claude Code y OpenCode.
 
@@ -54,11 +54,12 @@ If your setup already nails security and testing but has a hole in product desig
 | Product discovery & MVP scoping | `██████████` | — |
 | Architecture & system design | `██████████` | — |
 | UI/UX & design system | `██████████` | sharper with `ui-ux-pro-max` |
-| Backend — API, data modeling, auth | `██████████` | InsForge / Supabase |
+| Backend — API, data modeling, auth, multi-tenancy | `██████████` | InsForge / Supabase |
+| Integrations & AI inside the product | `██████████` | — |
 | Applied security — *prevention while building* | `██████████` | — |
 | Payments & monetization | `██████████` | Stripe MCP |
 | Performance · accessibility · SEO · PWA | `██████████` | — |
-| Pre-ship security review | `██████████` | — |
+| Pre-ship security review & RLS audit | `██████████` | sharper with `proof-first` |
 | Deploy · CI/CD · monitoring · rollback | `██████████` | — |
 | Deep security *audit* & fuzzing | `░░░░░░░░░░` | Trail of Bits, testing-handbook *(optional, high-risk apps)* |
 | Codebase & docs audit | `░░░░░░░░░░` | codebase-audit-suite *(optional)* |
@@ -82,6 +83,21 @@ The security ecosystem (Trail of Bits, Semgrep, CodeQL, audit suites) inspects *
 Stripe's own MCP is **control-plane only**: it creates products and prices, but it cannot create a Checkout Session or process a webhook. A plugin that merely wires the MCP gives you an app that *would sell but wouldn't charge* — the money never actually lands. The `payments` skill is deliberately hybrid: it delegates the catalog to the MCP, then **embeds the part that collects the money** — the Checkout Session → signature-verified webhook → idempotent fulfillment chain that Stripe's tooling leaves to you.
 
 > The redirect is the customer saying "I'll pay." The webhook is the bank confirming the money arrived. You ship the product when the bank confirms — not on a promise.
+
+### Field notes: the bugs that passed every test
+
+Checklists tell you what should be true. They don't tell you what goes wrong when a real customer pays, a real webhook arrives twice, or a real browser blocks a cookie. So most skills here carry a `references/field-notes.md`: failures collected from real production apps — a CRM, a paid community, a B2B ordering portal, a sales bot, and others — each written as **symptom → cause → how to check for it in your app**.
+
+None of them was caught by a build, a linter, a test suite or a scanner. A sample:
+
+- A redirect to the login page that carried 441 KB of customer data in its body.
+- The first paying customer getting no account, because a field was empty in one webhook object and present in another.
+- A new user making themselves super-admin of another organization with one request — RLS was on; it filters rows, not columns.
+- Nine production secrets ending in an invisible newline, added by `echo`.
+- A bot recording 3 buying signals out of 106 real messages, because the model treats a tool call that doesn't change its reply as optional.
+- An import that reported "no more pages" with 44% of the revenue still to download.
+
+Each note traces back to a commit or a project log in the app it came from. Where a claim could not be confirmed, it was softened or left out.
 
 ### The pattern behind both
 
@@ -111,6 +127,15 @@ Every skill carries a one-line analogy like the two above — so you understand 
 - **ui-ux-pro-max** (~87k ⭐): `npx uipro@latest init --ai claude`
   `saas-builder` detects whether it is installed and uses it automatically. If it is not installed, `saas-builder` uses embedded design principles as a fallback.
 
+- **proof-first**: `/plugin marketplace add MartinOlivero/proof-first`
+  Never trust the agent's report that something works — only evidence observable from outside it.
+  `saas-builder` routes to it for money, auth, user data and deploys, and falls back to its own
+  outside-in checks when it is absent.
+
+- **landing-moment**: `/plugin marketplace add MartinOlivero/landing-moment`
+  The method for a landing page's one authored interaction. `landing-page` hands it the hero
+  when it is installed.
+
 - **legal-docs**: `/plugin marketplace add MartinOlivero/saas-legal-docs`
   Legal documents deduced from the code, for products touching Argentina, the EU, the US, Brazil
   or the UK. `saas-builder` routes to it and refuses to improvise legal text without it.
@@ -133,6 +158,9 @@ You: "I want to build a SaaS for X"  (English or Spanish)
   BUILD ├─ database/schema?   ──►  data-modeling
         ├─ API/endpoints?     ──►  api-design
         ├─ login/roles?       ──►  auth
+        ├─ orgs / teams?      ──►  multi-tenancy
+        ├─ third-party API?   ──►  integrations
+        ├─ AI in the product? ──►  ai-features
         ├─ dashboard / app UI?──►  ui-design
         ├─ landing page?      ──►  landing-page + design-taste-frontend
         ├─ website/portfolio? ──►  design-taste-frontend
@@ -147,12 +175,13 @@ You: "I want to build a SaaS for X"  (English or Spanish)
         ├─ offline/installable?──► pwa
         │
   SHIP  ├─ safe to ship?       ──►  pre-ship-security
+        ├─ database exposed?  ──►  rls-audit
         └─ deploy/CI/monitor? ──►  deployment
 ```
 
 The **router never lets Claude write code or design blindly.** It triages first — like a nurse sending you to the right specialist — then hands off with full context so you're never asked the same thing twice.
 
-## The eighteen skills
+## The twenty-two skills
 
 **Orchestration**
 
@@ -177,14 +206,18 @@ The **router never lets Claude write code or design blindly.** It triages first 
 | --- | --- | --- |
 | **`api-design`** | "design the API", "REST or GraphQL?", "an endpoint" | REST conventions (errors, pagination, idempotency, versioning), REST-vs-GraphQL decision, env-config validation with zod. |
 | **`data-modeling`** | "design the database", "schema for…", "multi-tenant" | Postgres by default, safe multi-tenancy (`tenant_id` + RLS), indexing and migration discipline. |
-| **`auth`** | "add login", "user roles", "JWT or sessions?", "SSO" | Picks a provider (Clerk/Supabase/Better Auth) over rolled-your-own; sessions-vs-JWT, RBAC, multi-tenant scoping. |
+| **`auth`** | "add login", "user roles", "JWT or sessions?", "SSO" | Picks a provider (Clerk/Supabase/Better Auth) over rolled-your-own; sessions-vs-JWT, RBAC, multi-tenant scoping, and verifying the guard from outside. |
+| **`multi-tenancy`** | "organizations and members", "workspaces", "a user in two companies", "demo account" | Decides the membership model before the schema hardens, puts the tenant rule in one function, and covers what leaks: service-key code, deletion, invitations, the shared demo. |
+| **`integrations`** | "receive a webhook", "sync with their API", "OAuth with Google", "transactional email" | Designs for a third party that is late, wrong, duplicated or down: webhook-as-doorbell, reconciliation, "refused" vs "unknown", expiring credentials, both-ends tests. |
+| **`ai-features`** | "add AI to my app", "chatbot", "the bot makes things up", "AI costs" | The model as a product component: credentials and who pays, code-decides/model-judges, grounding, spend gates, honest failure, structured output. |
 
 **Secure & monetize**
 
 | Skill | Triggers on | What it does |
 | --- | --- | --- |
 | **`secure-coding`** | writing any endpoint/input/data write, "is this secure?", "rate limit" | OWASP Top 10 as *prevention* rules, input validation, mass-assignment guard, secrets hygiene, GDPR basics — baked in as you build. |
-| **`payments`** | "add Stripe", "subscriptions", "pricing", "billing" | Correct Stripe flow (Checkout → webhook → fulfill), customer portal, idempotent fulfillment, sane pricing tiers. |
+| **`payments`** | "add Stripe", "subscriptions", "pricing", "billing" | Correct Stripe flow (Checkout → webhook → fulfill), customer portal, idempotent fulfillment, subscription lifecycle (trial, grace, resubscribe), notes for Mercado Pago, sane pricing tiers. |
+| **`rls-audit`** | "audit my RLS", "is my database exposed?", "can users see each other's data?" | For Supabase / InsForge / Postgres + auto-API: you declare what each table is meant to expose, it reads the live policies, grants, views and functions, and proves every gap from outside with the public key. |
 
 **Polish & ship**
 
@@ -271,6 +304,14 @@ Each of these activates the right skill on its own — you don't call skills by 
   → `auth` (provider pick + RBAC + protected routes)
 - **Security, while building:** *"Add an endpoint to update a user's profile."*
   → `secure-coding` (zod `.strict()` validation, authz check, mass-assignment guard)
+- **Teams:** *"Let users invite teammates, and let a consultant belong to two companies."*
+  → `multi-tenancy` (memberships, one tenant function, the deletion and invitation edge cases)
+- **Integration:** *"Sync appointments with their calendar API and receive their webhooks."*
+  → `integrations` (doorbell webhook + reconciliation + "refused vs unknown")
+- **AI feature:** *"Add an assistant that answers customers from our product catalog."*
+  → `ai-features` (API key, grounding rule, spend caps, failure path)
+- **Database exposure:** *"Can someone read my tables with the public key?"*
+  → `rls-audit` (intent vs live policies, proven from outside)
 - **Payments:** *"Add Stripe subscriptions with a monthly and annual plan."*
   → `payments` (Checkout → webhook → idempotent fulfillment + customer portal)
 - **Performance:** *"My app's Lighthouse score is bad and the bundle is huge."*
@@ -297,6 +338,9 @@ Each skill encodes methodology from authoritative, community-validated sources:
 | `api-design` | [microsoft/api-guidelines](https://github.com/microsoft/api-guidelines) (~23k⭐), Stripe API + idempotency docs, [zod](https://github.com/colinhacks/zod) (~43k⭐) |
 | `data-modeling` | PostgreSQL RLS docs, [supabase](https://github.com/supabase/supabase) (~104k⭐), [insforge](https://github.com/insforge/insforge) (~5k⭐, agentic-native), AWS + PlanetScale multi-tenancy guides |
 | `auth` | InsForge Auth (agentic-native), [Better Auth](https://github.com/better-auth/better-auth) (~28k⭐), [Auth.js](https://github.com/nextauthjs/next-auth) (~28k⭐), Clerk, Supabase Auth |
+| `multi-tenancy`, `rls-audit` | PostgreSQL docs (Row Security Policies, `security_invoker`, default and column privileges), Supabase RLS and Data API hardening guides, AWS multi-tenant RLS guide — plus field notes from production |
+| `integrations` | Provider API references verified against real responses, RFC 8058 (one-click unsubscribe), Stripe webhook best practices |
+| `ai-features` | Provider docs for tool use, structured outputs, prompt caching and usage reporting — plus field notes from production |
 | `secure-coding` | [OWASP Cheat Sheet Series](https://github.com/OWASP/CheatSheetSeries) (~29k⭐), OWASP Top 10:2021, [GDPR.eu](https://gdpr.eu), [gitleaks](https://github.com/gitleaks/gitleaks) (~18k⭐) |
 | `pre-ship-security` | OWASP Cheat Sheet Series (~29k⭐), `npm audit`, [gitleaks](https://github.com/gitleaks/gitleaks) (~18k⭐), Helmet; escalates to Semgrep/CodeQL, Trail of Bits, testing-handbook |
 | `payments` | [stripe-samples](https://github.com/stripe-samples), Stripe Customer Portal docs, Stripe MCP, InsForge Stripe integration (agentic-native) |

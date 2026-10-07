@@ -68,6 +68,35 @@ jobs:
 - **`git revert` is the durable fix** — rollback changes routing, not code; revert the bad commit so the next deploy is clean.
 - **Risky launch?** Use Vercel **Rolling Releases** (staged %) or a **feature flag** (the `flags` SDK / OpenFeature) to ship code dark and flip it without redeploying. Decision: small bug → instant rollback + revert; risky launch → rolling release or flag.
 
+## Step 6 — After every release, check the live thing
+
+"Committed" and "deployed" are different states, and "deployed" and "working" are too. Each of these takes under a minute:
+
+- **Request the real URL** of what you just shipped. Pages have returned 404 for weeks because the file existed and the deploy never ran.
+- **Compare deployed server functions with the repo** — on a BaaS they ship by a separate command.
+- **Load secrets with `printf '%s'`, never `echo`**, and scan for trailing newlines: `vercel env pull out.txt --environment production && grep '\\n"' out.txt`.
+- **Rebuild after changing a build-time variable** (`VITE_*`, `NEXT_PUBLIC_*`).
+- **Confirm analytics still records a visit** after any change to headers or rewrites.
+- **List every project and origin still connected** to the repo, CORS and auth redirects; remove the dead ones.
+
+## Step 7 — Releasing without a staging environment
+
+Many small products have only production. That is workable with discipline:
+
+- **Split migrations**: additive first → deploy code → restrictive last.
+- **Rehearse inside `BEGIN … ROLLBACK`** against the real database.
+- **Write the rollback** before applying.
+- **Tests that touch production create their own data and credentials, clean up in `finally`, and verify the cleanup.**
+- **Back up irreplaceable data to different infrastructure**, with a job that aborts on an empty export.
+
+## Field notes
+
+`references/field-notes.md` holds 21 deploy failures from production apps. The three that cost the most:
+
+1. Nine production variables ending in an invisible newline: payments dead, sitemap split.
+2. A product taking payments with its legal pages returning 404.
+3. Analytics silently off for 22 days after a header change.
+
 ## Output
 
 Deliver: the `ci.yml`, branch-protection instructions, the Sentry init + Vite plugin config, the env-scope plan, and a written rollback runbook.

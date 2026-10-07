@@ -61,6 +61,31 @@ Use the **Customer Portal**: create a Billing Portal Session server-side and red
 - Offer monthly + annual (annual ≈ 2 months free) to cut churn.
 - Stripe is the **catalog source of truth** — set prices there, reference the IDs in code.
 
+## Other providers (Mercado Pago and similar)
+
+The flow is the same — create the charge server-side, fulfill on the webhook, stay idempotent — but verify these against a **real** payment, because sandboxes differ from production:
+
+- **Which object carries which field.** A subscription event can arrive with the payer's email empty while the payment object has it. Treat empty as missing (`||`, not `??`) and fetch the object that holds the data.
+- **Whether the sandbox is usable at all.** Some require both parties to be test accounts. A real plan at the minimum amount is a legitimate test.
+- **The token's prefix.** Check that a key stored as "test" is a test key before it charges anyone.
+- **The cancellation event may not identify the user.** Store the provider's customer and subscription ids against your user at sign-up.
+
+## Subscription lifecycle (decide before launch)
+
+- **Trial**: store an explicit `trial_ends_at`, set when the trial actually starts — not derived from `created_at`.
+- **Failed renewal**: keep access while the provider is retrying; move to `past_due` only when it gives up.
+- **Resubscribe**: cancel the previous subscription at the provider.
+- **Provisioning is idempotent**: the second event for the same customer changes nothing — in particular, it does not issue new credentials.
+- **Conversion tracking** fires once, when the account is created — not on every webhook.
+
+## Field notes
+
+`references/field-notes.md` holds 16 payment failures from production apps, each with symptom, cause and what fixed it. Read it before the first real charge. The three that cost the most:
+
+1. The first paying customer got no account, because a field was empty in one object and present in another.
+2. Checkout died with a "connection" error that was a trailing newline in the secret key.
+3. Trial access was measured from sign-up instead of activation, locking out people who verified late.
+
 ## Output
 
 Deliver: the integration choice, the `/api/checkout` and `/api/webhook` handlers with signature verification + idempotent fulfillment, the customer-portal redirect, the lifecycle-event handling, and the pricing tiers.

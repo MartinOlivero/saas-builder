@@ -52,6 +52,23 @@ Every API needs config, and a missing var should fail loudly at boot, not silent
 
 API shape decided here feeds the `data-modeling` skill (the schema behind it), the `auth` skill (who can call each endpoint), and `secure-coding` (validation + rate limits on each handler).
 
+## Step 4 — Failure semantics (decide them per endpoint)
+
+- **Check every `{ error }`.** Many SDKs return errors instead of throwing; an unchecked one is a silent failure.
+- **Three outcomes, not two**: succeeded, refused, **unknown**. "Could not read" is not "not found"; a timeout is not "nothing changed".
+- **A retry must be safe.** "The response was lost" is not "it was not saved" — check what exists before inserting again.
+- **Send only the fields the user changed**, so a form cannot overwrite what moved in the meantime.
+- **One server-side writer** for rewards, credits, balances and payment states.
+- **Chunk id lists and paginate reads**; auto-generated APIs cap rows and URLs have a length limit.
+
+## Field notes
+
+`references/field-notes.md` holds 11 API failures from production apps. The three that cost the most:
+
+1. Failures invisible for days because an SDK's returned `error` was never read.
+2. A duplicated order that took four rounds to fix.
+3. Editing one field of a record silently reset another.
+
 ## Output
 
 Deliver: the REST-vs-GraphQL call with reason, the route list with methods + status codes, the error envelope, the pagination scheme, and a `zod` env schema for the service.
