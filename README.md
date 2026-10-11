@@ -1,6 +1,6 @@
 # saas-builder — multi-CLI agent plugin to build a complete, secure SaaS
 
-[![Version](https://img.shields.io/badge/version-2.8.0-blue.svg)](https://github.com/MartinOlivero/saas-builder)
+[![Version](https://img.shields.io/badge/version-2.8.1-blue.svg)](https://github.com/MartinOlivero/saas-builder)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
 [![CLIs](https://img.shields.io/badge/CLIs-Claude%20Code%20·%20OpenCode%20·%20Gemini%20·%20Codex%20·%20Copilot-purple.svg)](#installation--works-across-cli-agents)
 
