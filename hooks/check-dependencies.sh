@@ -31,6 +31,13 @@ for dir in $search_dirs; do
   fi
 done
 
+# También puede estar instalado como PLUGIN (claude plugin install), que no deja
+# nada en ~/.claude/skills: vive en plugins/cache y queda anotado en este registro.
+# Sin este chequeo el aviso salía en cada arranque aunque estuviera instalado.
+if [ "$found" -eq 0 ] && grep -qiE '"(ui-ux-pro|uipro)' "$HOME/.claude/plugins/installed_plugins.json" 2>/dev/null; then
+  found=1
+fi
+
 # Detectado: nada que hacer, salida silenciosa.
 [ "$found" -eq 1 ] && exit 0
 
